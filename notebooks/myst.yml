@@ -1,0 +1,57 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  title: UE12 & UE22 - numérique
+  # I suspect the intention was maybe to use this for the title tooltip ?
+  # in any case as of now 2024 june the title is used for the tooltip too (a bit silly)
+  # and I can't see where this is used
+  description: "CIC 1A - Mines Paris PSL - Python Numérique"
+  # this one causes additional buttons to be shown 
+  # in the upper right area (close to the github button)
+  license: CC-BY-NC-SA-4.0
+  # inserted under the title
+  authors:
+    - Thierry Parmentelat
+    - Valérie Roy
+  github: https://github.com/ue12-p25/numerique
+  keywords:
+    - Informatique
+    - MinesParis
+    - PSL
+    - UE12
+    - Python
+    - numpy
+    - pandas
+    - matplotlib
+    - Jupyter
+  date: 2025-06-01
+  jupyter:
+    lite: true
+  # bibliography: []
+
+site:
+  #template: book-theme
+  template: https://github.com/flotpython/myst-theme/releases/download/custom/book-theme.zip
+  # used in the tab name
+  title: ue12-p25-numerique
+  # this would be for the horizontal header bar - not used here (yet)
+  # nav: []
+  # actions:
+  #   - title: Learn More
+  #     url: https://mystmd.org/guide
+  domains: []
+  options:
+    # workaround for https://github.com/jupyter-book/mystmd/issues/1985#issuecomment-3232330240
+    # we have converted the svg to ico
+    # for that in Inkscape: set size as a square 72x72
+    # and use Path -> Object to Path to convert the text to a path
+    # and so, remove the dependency to font
+    favicon: media/favicon-p25.svg.ico
+    logo: media/logo-python-numerique.svg
+    # very visible in the header
+    logo_text: "UE12: Python Numérique"
+    style: "_static/style.css"
+    folders: true
+
+extends:
+  - myst-toc.yml

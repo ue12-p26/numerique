@@ -1,0 +1,28 @@
+numpy
+pandas
+matplotlib
+scipy # for reading/writing wav files
+pillow
+seaborn
+scikit_learn
+openpyxl
+ipythontutor
+folium
+geopandas
+
+# tooling
+jupyter
+jupytext
+jupyterlab-courselevels
+jupyterlab-myst
+ipywidgets
+ipympl
+itables
+
+# for authors only
+# nbprune
+# jupyter-book
+# sphinx-exercise
+
+# for updating nbhosting toc from jupyter book
+ruamel.yaml

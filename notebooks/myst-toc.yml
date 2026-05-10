@@ -1,0 +1,84 @@
+version: 1
+
+# ouch: only the .md files are included in the output
+# this is why we have paired all the notebooks with a .md file
+
+# about url links; not supported as of feb 2025; follow up on
+# https://mystmd.org/guide/table-of-contents#url-entries
+# https://github.com/jupyter-book/mystmd/issues/1445
+
+
+project:
+  toc:
+
+    - file: 0-00-intro-nb.md
+
+    - title: numpy
+      children:
+        - file: 1-01-numpy-introduction-nb.md
+        - file: 1-02-numpy-array-nb.md
+        - file: 1-03-numpy-memory-nb.md
+        - file: 1-04-numpy-vectorization-nb.md
+        - file: 1-05-numpy-indexing-slicing-nb.md
+        - title: TP images (1/2)
+          file: 1-06-imported-images1-nb.md
+          # url: https://numerique-exos.info-mines.paris/numpy-tps/images/readme-images1-nb/
+        - file: 1-07-numpy-aggregate-nb.md
+        - file: 1-08-numpy-broadcast-nb.md
+        - file: 1-09-numpy-array-testing-nb.md
+        - title: TP images (2/2)
+          file: 1-10-imported-images2-nb.md
+          # url: https://numerique-exos.info-mines.paris/numpy-tps/images/readme-images2-nb/
+        - file: 1-11-numpy-TP-dices-advanced-nb.md
+        - title: TP sons
+          # file: 1-12-imported-sounds-nb.md
+          url: https://numerique-exos.info-mines.paris/numpy-tps/sounds/readme-sounds-nb/
+        - file: 1-13-numpy-linalg-optional-nb.md
+        - file: 1-14-numpy-optional-indexing-nb.md
+        - pattern: .teacher/1*-corrige-nb.md
+          hidden: true
+
+    - title: pandas
+      children:
+        - file: 2-01-pandas-read-csv-nb.md
+        - file: 2-02-pandas-condition-nb.md
+        - file: 2-03-pandas-indexing-slicing-nb.md
+        - file: 2-04-pandas-TP-drop-cast-access-str-nb.md
+        - file: 2-05-pandas-TP-sorting-nb.md
+        - file: 2-06-pandas-matplotlib-nb.md
+        - file: 2-07-pandas-group-by-nb.md
+        - file: 2-08-pandas-create-dataframe-nb.md
+        - file: 2-09-pandas-merge-concat-nb.md
+        - title: TP collages
+          # file: 2-10-imported-collages-nb.md
+          url: https://numerique-exos.info-mines.paris/pandas-tps/collages/readme-collages-nb/
+        - file: 2-11-timeseries-nb.md
+        - title: "HOWTO: les vélos (timeseries)"
+          # file: 2-12-imported-fremont-bridge-nb.md
+          url: https://numerique-exos.info-mines.paris/pandas-howtos/fremont-bridge/howto-fremont-bridge-nb/
+        - title: TP Covid
+          # file: 2-13-imported-covid-nb.md
+          url: https://numerique-exos.info-mines.paris/pandas-tps/covid/readme-covid-nb/
+          # double check after dedup on the exos side
+        - title: TP géoloc addresses
+          # file: 2-14-imported-addresses-nb.md
+          url: https://numerique-exos.info-mines.paris/geo-tps/addresses/readme-addresses-nb/
+        - file: 2-15-itables-nb.md
+        - pattern: .teacher/2*-corrige-nb.md
+          hidden: true
+
+    - title: visualisation
+      children:
+        - pattern: 3-[0-9]*-nb.md
+        - pattern: .teacher/3*-corrige-nb.md
+          hidden: true
+    - title: cheatsheets
+      children:
+        - pattern: 4-[0-9]*-nb.md
+    - title: rappels Python
+      children:
+        - pattern: 5-[0-8]*-nb.md
+    # no longer relevant
+    # - title: petit test Python
+    #   children:
+    #     - pattern: 9-[0-9]*-nb.md

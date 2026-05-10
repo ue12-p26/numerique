@@ -1,0 +1,78 @@
+# NOTE THAT in addition to this file, you need to check on github.com
+# - enable github pages (select deploy from a branch)
+# - go to the Settings -> Environments tab
+#   then select the 'github-pages' environment
+#   and make sure the branch of interest (here main) is allowed in the 'Branch protection rules' area
+# - also for using a self-hosted runner, make sure you have set it up properly
+#   github.com/$ORGA -> Settings -> Actions -> Runner groups -> Default Group -> Allow public repositories
+
+name: Deploy MyST to GitHub Pages
+
+on:
+  # Allows manual trigger
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+
+# the following sets permissions of the GITHUB_TOKEN
+# to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+# this is no longer needed as we serve from hostnames
+# in our own domain info-mines.paris
+# env:
+#   BASE_URL: /${{ github.event.repository.name }}
+
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    container:
+      image: dockerhub.pl.sophia.inria.fr/python-nodejs:latest
+    # this is so we can use source
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      - name: "Python venv & requirements.txt"
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+      - name: Install MyST Markdown
+        run: |
+          source venv/bin/activate
+          npm install mystmd thebe-core thebe thebe-lite
+      - name: Build HTML Assets
+        run: |
+          source venv/bin/activate
+          cd notebooks
+          npx myst build --execute --html
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: './notebooks/_build/html'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
