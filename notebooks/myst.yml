@@ -13,7 +13,7 @@ project:
   authors:
     - Thierry Parmentelat
     - Valérie Roy
-  github: https://github.com/ue12-p25/numerique
+  github: https://github.com/ue12-p26/numerique
   keywords:
     - Informatique
     - MinesParis
@@ -33,7 +33,7 @@ site:
   #template: book-theme
   template: https://github.com/flotpython/myst-theme/releases/download/custom/book-theme.zip
   # used in the tab name
-  title: ue12-p25-numerique
+  title: ue12-p26-numerique
   # this would be for the horizontal header bar - not used here (yet)
   # nav: []
   # actions:
@@ -46,7 +46,7 @@ site:
     # for that in Inkscape: set size as a square 72x72
     # and use Path -> Object to Path to convert the text to a path
     # and so, remove the dependency to font
-    favicon: media/favicon-p25.svg.ico
+    favicon: media/favicon-p26.svg.ico
     logo: media/logo-python-numerique.svg
     # very visible in the header
     logo_text: "UE12: Python Numérique"
