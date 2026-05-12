@@ -28,6 +28,8 @@ project:
   jupyter:
     lite: true
   # bibliography: []
+  plugins:
+    - https://raw.githubusercontent.com/choldgraf/myst-lightbox/main/src/index.mjs
 
 site:
   #template: book-theme
