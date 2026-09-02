@@ -35,7 +35,7 @@ en `pandas`, comme en `numpy`, les fonctions sont **vectorisées** par souci de 
 
 comme en `numpy`, une expression conditionnelle va s'appliquer à toute la structure  
 et retourner une structure du même forme, mais avec des résultats booléens  
-comme [on avec les masques `numpy`](#label-numpy-mask)
+comme [avec les masques `numpy`](#label-numpy-mask)
 
 exemple:
 
@@ -333,7 +333,7 @@ vous remarquez une dataframe de la **même taille** que `df`
 df.isna()
 ```
 
-+++ {"jp-MarkdownHeadingCollapsed": true, "tags": ["framed_cell"]}
++++ {"tags": ["framed_cell"]}
 
 ### compter les valeurs manquantes
 
@@ -344,7 +344,7 @@ comme en `numpy` je peux appliquer une fonction - ici `sum()` - en précisant l'
 l'objet retourné est une série contenant le résultat de la fonction
 
 exemple avec la somme (`sum`) des valeurs manquantes sur l'axe des lignes `axis=0`  
-qui `sum` les lignes entre elles - le résultat est par colonne donc
+(qui `sum` les lignes entre elles) le résultat est obtenu par colonne
 
 ```python
 df.isna().sum()       # les deux formes sont
@@ -598,7 +598,7 @@ print(10*'-', 'par ligne')
 print(df.isna().sum(axis=1))
 ```
 
-1. calculez le nombre de classes du bateau
+3. calculez le nombre de classes du bateau
 
 ```{code-cell} ipython3
 # votre code
