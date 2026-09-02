@@ -10,8 +10,8 @@ kernelspec:
   name: python3
 language_info:
   name: python
-  nbconvert_exporter: python
   pygments_lexer: ipython3
+  nbconvert_exporter: python
 ---
 
 # Python-numérique - les tables de données
@@ -289,15 +289,17 @@ df.describe(include='all')
 la méthode `describe()` marche aussi sur les séries (colonnes)
 
 ```python
-df['Sex'].describe()
+df['Age'].describe()
 ->
-count 891
-unique 2
-top male
-freq 577
-Name: Sex, dtype: object
-```
-
+count    714.00
+mean      29.70
+std       14.53
+min        0.42
+25%       20.12
+50%       28.00
+75%       38.00
+max       80.00
+Name: Age, dtype: float64
 ````
 
 ```{code-cell} ipython3
@@ -320,7 +322,7 @@ df.describe(include='all')
 
 ```{code-cell} ipython3
 # le code
-df['Sex'].describe()
+df['Age'].describe()
 ```
 
 ## les index et indices des tables
@@ -742,7 +744,8 @@ df.index
 ## forme et dimension de la table
 
 `````{admonition} →
-`pandas` est fondé sur `numpy` (cela pourrait changer dans le futur)
+`pandas` est encore fondé sur `numpy` mais il le remplace de plus en plus par `pyarrow`  
+(par exemple pour les tableaux de chaînes de caratères)
 
 la **forme** de la table est donnée par l'attribut `pandas.DataFrame.shape`
 
@@ -751,7 +754,7 @@ df.shape
 -> (891, 11)
 ```
 
-`numpy` s'occupe de stocker et manipuler des tableaux de dimension 2  
+`numpy` (ou `pyarrow`) s'occupe de stocker et manipuler des tableaux
 `pandas` apporte
 
 * l'indexation du tableau
