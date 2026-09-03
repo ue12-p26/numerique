@@ -40,7 +40,7 @@ bref on n'en donne ici qu'une version **très** édulcorée
 
 ## les types de base 
 
-### la version `Python`
+### les types pour le temps en `Python`
 
 ````{admonition} →
 
@@ -53,19 +53,24 @@ l'idée étant qu'on peut faire de l'arithmétique avec ces types, comme par exe
 * faire la différence entre deux `datetime` pour obtenir un `timedelta`
 * ou ajouter un `timedelta` à un `datetime` pour obtenir un autre `datetime`
 * ou multiplier un `timedelta` par un nombre, etc...
+
+pour quelques exemples [vous pouvez voir cette section un peu plus bas](#label-python-datetime)
 ````
 
 ```{code-cell} ipython3
-# pas très PEP8 la librairie datetime...
-from datetime import datetime
+# dans le module datetime se trouve la classe datetime
+# et pour s'y retrouver, c'est mieux de l'appeler DateTime
+# (pas très PEP8 la librairie datetime...)
+
+from datetime import datetime as DateTime
 ```
 
 ```{code-cell} ipython3
-# dans le module datetime se trouve la classe datetime
-# help(datetime)
+# uncomment to see the help
+# help(DateTime)
 ```
 
-### la version `numpy`
+### les types pour le temps en `numpy`
 
 +++
 
@@ -91,7 +96,7 @@ voyez [en annexe une table avec les précisions disponibles](#label-time-scales)
 
 +++
 
-### la version `pandas`
+### les types pour le temps en `pandas`
 
 +++
 
@@ -99,16 +104,17 @@ voyez [en annexe une table avec les précisions disponibles](#label-time-scales)
 
 **mais** ici encore les types `numpy`, malgré leurs qualités, ont le gros défaut d'être très peu *user-friendly*, aussi `pandas` nous expose sa propre version de essentiellement les mêmes concepts, plus un:
 
-* `Timestamp` pour un instant  
-(aurait pu/dû s'appeler `Datetime`, mais bon...)
-
-* `Timedelta` pour une durée
-* `Period` pour un intervalle de temps, représenté par un début **et** une durée
+* `Timestamp` pour un **instant** (qui aurait pu/dû s'appeler `Datetime`, mais bon...)
+* `Timedelta` pour une **durée**
+* `Period` pour un **intervalle de temps**, représenté par un début **et** une durée
 
 ces types sont fabriqués *au dessus* des 2 types de base fournis par `numpy`, et visent donc principalement à les rendre plus faciles à utiliser
 
-en `pandas` la fonction [pandas.to_datetime](https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html) vous permet de traduire des objets en date   
+```{admonition} Note
+:class: tip
+la fonction [pd.to_datetime](https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html) vous permet de traduire des objets en date   
 nous allons l'illustrer avec des exercices
+```
 
 ````
 
@@ -137,7 +143,7 @@ etc..
 
 vous avez peut-être remarqué que `read_csv` propose des (tas d') options pour la gestion des instants (notamment le paramètre `parse_dates`)
 
-dans un premier temps, nous allons rester loin de ce genre de features,    
+mais dans un premier temps, nous allons rester loin de ce genre de features,    
 et dans cet exercice nous allons procéder en deux temps, en combinant `pd.read_csv` et `pd.to_datetime`
 
 ```{code-cell} ipython3
@@ -164,8 +170,16 @@ et dans cet exercice nous allons procéder en deux temps, en combinant `pd.read_
 
 ```{code-cell} ipython3
 # prune-cell
+
+import itables
+
+itables.init_notebook_mode()
+```
+
+```{code-cell} ipython3
+# prune-cell
 df = pd.read_csv('data/Amazon.csv', skiprows=3)
-df.head()
+df
 ```
 
 ```{code-cell} ipython3
@@ -183,22 +197,34 @@ df.dtypes
    1. en option (pour les avancés): sauriez-vous passer à `to_datetime` le paramètre `format` qui va bien ?
       sachant que c'est une pratique **très recommandée** pour éviter les embrouilles
 
-````{admonition} plusieurs choses là pour les curieux
+`````{admonition} plusieurs choses là pour les curieux
 :class: dropdown
 
- - la première est que `pandas` utilise les types de données `numpy`  
-    en `pandas`, quand vous demandez le type des données d'une colonne, vous pouvez obtenir un nom de type `numpy`
- - la seconde est que la `repr()` et la `str()` du type `np.datetime64` sont différentes  
-   (la `repr` dépend de votre ordinateur '<' est pour little-endian, 'M' est le le code caractère du type datetime et 8 la taille mémoire en octets) 
-    ```python
-    dt = np.datetime64("2023-09-12 15:30:00.000000000") # nano secondes
-    print(repr(dt.dtype))
-    -> dtype('<M8[ns]')
-       (M est le code caractère du type datetime)
-    print(str(dt.dtype))
-    -> datetime64[ns]
-    ```
-````
+- la première est que `pandas` utilise les types de données `numpy`  
+   en `pandas`, quand vous demandez le type des données d'une colonne, vous pouvez obtenir un nom de type `numpy`
+- la seconde est que par défaut vous allez sans doute obtenir une précision de la **microseconde** `[us]`;
+  c'est une différence avec pandas 2.x qui aurait utilisé plutôt des `[ns]` 
+  mais tant qu'on reste dans l'intervalle [1678 .. 2262], donc pour nous pas de lézard a priori
+- enfin vous pourrez vérifier que la `repr()` et la `str()` du type `np.datetime64` sont différentes  
+  ce qui peut perturber au début quand on ne le sait pas:
+  ```{code-cell}
+  dt = np.datetime64("2026-09-08 15:30:00.000000") # micro secondes
+  ```
+  ````{grid} 2
+  ```{code-cell}
+  # la str() est lisible
+  print(str(dt.dtype))
+  ```
+  ```{code-cell}
+  # par contre le repr() est plus cryptique:
+  # '<' est pour little-endian (dépend de votre ordi), 
+  # `M` est le le code caractère du type `datetime`,
+  # et 8 est la taille mémoire en octets  
+  print(repr(dt.dtype))
+  ```
+  ```` 
+  mais à nouveau les deux formes correspondent au même type !
+`````
 
 ```{code-cell} ipython3
 # à vous
@@ -341,7 +367,7 @@ df['week-day'] = df.Date.dt.dayofweek
 ```
 
 ```{code-cell} ipython3
-# également dispo:
+# également dispo, entre (plein d') autres..
 s = df.Date
 
 pd.DataFrame({'original': s,
@@ -368,9 +394,9 @@ df.head(5)
    et triez la dataframe selon cet index
    (ça semble être déjà le cas, mais en est-on bien sûr ?)
 
-pour les avancés, question subsidiaire:  
-le fait de trier les dates va-t-il changer quelque chose à l'affichage des **points** e.g (`Date`, valeur de l'action) ?  
-va-t-il changer quelque chose lorsqu'on va vouloir sélectionner des plages de temps à base de slicing (`.loc`) ?
+pour les avancés, questions subsidiaires: est-ce que le fait de trier va changer quelque chose:
+- à l'affichage des **points** e.g (`Date`, valeur de l'action) ?  
+- lorsqu'on va vouloir sélectionner des plages de temps à base de slicing (`.loc`) ?
 
 ```{code-cell} ipython3
 # à vous
@@ -387,9 +413,9 @@ df.sort_index(inplace=True)
 
 imaginons que les données soient toutes mélangées
 
-* le plotting des points (scatter plot) ne sera pas affecté, les points (x, y) sont élaborés à partir de l'index, qui est le bon instant
-* le plotting avec un vrai 'plot' sera affecté, car en plus des points, on va tracer les traits qui joignent deux entrées successives dans la dataframe
-* le slicing à base de `loc` bien sûr va être affecté également
+* le plotting des points (**scatter** plot) ne sera pas affecté, les points (x, y) sont élaborés à partir de l'index, qui est le bon instant
+* le plotting avec un plot **normal** sera affecté, car en plus des points, on va tracer les traits qui joignent deux entrées successives dans la dataframe
+* le slicing à base de `loc` va bien sûr être affecté également
 
 ```{code-cell} ipython3
 # prune-end
@@ -399,15 +425,19 @@ imaginons que les données soient toutes mélangées
 
 +++ {"tags": ["level_basic"]}
 
-6. 1. plottez la valeur de l'action au cours du temps
+6. plottez la valeur de l'action au cours du temps
 
-   * sur un même diagramme, les deux cours `High` et `Low`
-   * ensuite sur deux diagrammes séparés  
+   * (1) sur un même diagramme, les deux cours `High` et `Low`
+   * (2) ensuite sur deux diagrammes séparés  
      *hint*: lisez bien la doc de `df.plot()`
 
-**indice**
+:::{admonition} `df.plot` *vs* `plt.plot`
+:class: tip
+
 on pourrait bien sûr utiliser `plt.plot()`  
-mais ici on vous invite à utiliser directement la méthode `plot` sur une DataFrame, vous verrez que c'est beaucoup plus simple !
+mais ici on vous invite à utiliser la méthode `plot` **directement sur une DataFrame**  
+vous verrez que c'est beaucoup plus simple !
+:::
 
 ````{admonition} visus interactives
 on pourra profiter de l'occasion pour expérimenter avec les visus interactives
@@ -423,7 +453,7 @@ qui sont rendues possibles avec
 
 il faut savoir que
 - il est nécessaire d'installer `pip install ipympl` pour utiliser cela
-- souvent on ne peut pas changer de *driver* matplotlib en cours de route sans redémarrer le kernel
+- souvent on ne peut pas changer de *driver* matplotlib en cours de route sans **redémarrer le kernel**
 ```
 ````
 
@@ -479,21 +509,19 @@ df[cols].plot(subplots=True);
 
 ````{admonition} →
 
-c'est très pratique de slicer un index qui contient des dates `Timestamp`
+c'est très pratique de **slicer un index qui contient des dates**  
+(ou tout objet de type `Timestamp`..)
 
 ici par exemple nous avons une granularité de la journée (sauf accident il y a une entrée par jour de la semaine)  
 mais on peut slicer de manière assez naturelle
 
-première commodité: on peut utiliser des chaines, pas besoin de mettre des objet `Timestamp` dans le slice
+- première commodité: on peut utiliser des chaines, pas besoin de mettre des objets `Timestamp` dans le slice
 
-- voici les entrées entre le 1er avril 2020 et le 30 juin 2020  
-  (rappel: comme on utilise `.loc` c'est inclus)
+  voici les entrées entre le 1er avril 2020 et le 30 juin 2020  
+  (rappel: comme on utilise `.loc`, les bornes sont incluses)
     ```python
     df.loc['2020-04-01' : '2020-06-30']
     ```
-   
-
-
 
 - encore plus simple: laissons le calculer les jours...
     ```python
@@ -505,14 +533,16 @@ première commodité: on peut utiliser des chaines, pas besoin de mettre des obj
     df.loc['2019']
     ```
 
-comment feriez-vous pour filtrer du 1er janvier 2019 jusqu'à la fin des données ?
+exercice: comment feriez-vous pour filtrer du 1er janvier 2019 jusqu'à la fin des données ?
 
-***
+```{admonition} et si l'index n'est pas trié ?
+:class: tip dropdown
 
 si les dates de l'index ne sont pas ordonnées correctement, le slicing sera-il affecté ?  
 non (et un peu oui)
 - non parce que `pandas` ne sélectionnera bien sûr que les dates incluses dans l'intervalle indiqué
 - oui parce que, dans la sous-dataframe obtenue, les dates seront ordonnées comme dans l'index
+```
 ````
 
 ```{code-cell} ipython3
@@ -537,13 +567,13 @@ df.tail(2)
 :tags: [raises-exception]
 
 # première commodité: on peut utiliser des chaines
-# pas besoin de mettre des objet Timestamp dans le slice
+# pas besoin de mettre des objets Timestamp dans le slice
 
 # les entrées entre le 1er avril 2020 et le 30 juin 2020
-# rappel: comme on utilise .loc c'est inclus
+# rappel: comme on utilise .loc les bornes sont incluses
 
-# on coupe aux 3 premiers pour ne pas envahir l'écran
-df.loc['2020-04-01' : '2020-06-30'].head(3)
+# pour ne pas envahir l'écran...
+df.loc['2020-04-01' : '2020-06-30'].head(2)
 ```
 
 ```{code-cell} ipython3
@@ -552,13 +582,13 @@ df.loc['2020-04-01' : '2020-06-30'].head(3)
 # mais en fait c'est encore plus simple d'écrire ce qui suit
 # qui signifie, de avril à juin, toujours inclusivement
 
-df.loc['2020-04' : '2020-06'].tail(3)
+df.loc['2020-04' : '2020-06'].tail(2)
 ```
 
 ```{code-cell} ipython3
 # toutes les données de l'année 2019
 
-df.loc['2019'].head(3)
+df.loc['2019'].head(2)
 ```
 
 ```{code-cell} ipython3
@@ -576,7 +606,7 @@ df.loc['2019':]
 
 ````{admonition} →
 ces deux fonctions travaillent de la même façon:
-- elles regroupent les données dans des *bins* (des corbeilles)
+- elles regroupent les données dans des *bins* (des corbeilles, on dit aussi parfois *bucket*)
 - toutes les données qui tombent dans une corbeille peuvent ensuite être agrégées  
   (comme d'habitude avec `mean()`, `sum()`, `min()`,…)
 
@@ -601,7 +631,7 @@ dans ce modèle:
 
 dans l'illustration ci-dessus, chaque point bleu illustre **la moyenne** de chaque corbeille  
 mais souvenez-vous que `resample()` ne fait que les corbeilles, pas l'agrégation  
-aussi on a choisi d'attacher chaque point bleu au moment correspondant **au début** de chaque corbeille (et bien sûr c'est réglable..)
+de la même manière,  on a choisi d'attacher chaque point bleu au moment correspondant **au début** de chaque corbeille (et bien sûr c'est réglable..)
 ```
 ````
 
@@ -646,18 +676,18 @@ ticks['month'] = ticks.time.dt.to_period('M')
 ticks.head(4)
 ```
 
+ce qu'il faut remarquer c'est que les nouveaux champs sont donc **de type `Period`**, qui contient un début et une fin (et pas simplement un instant comme un `Datetime`)
+
+```{code-cell} ipython3
+ticks.dtypes
+```
+
 ````{admonition} autres fréquences utiles
 
 on peut utiliser cette fonction avec des fréquences comme `'W'` (week) ou `'Y'` (year) ou même `'Q'` (quarter)
 ````
 
 +++
-
-ce qu'il faut remarquer c'est que les nouveaux champs sont donc **de type `Period`**, qui contient un début et une fin (et pas simplement un instant comme un `Datetime`)
-
-```{code-cell} ipython3
-ticks.dtypes
-```
 
 ## `rolling()`
 ````{admonition} →
@@ -688,7 +718,13 @@ par défaut `rolling` attache la valeur *à la fin* de l'intervalle, ou dit autr
 ````{admonition} attention aux unités !
 :class: dropdown
 
-pour exprimer la durée de la fenêtre avec `rolling()`, il apparait qu'on ne peut pas utiliser les unités `W`, `M` ou `Y` qui sont, semble-t-il, susceptibles de varier en durée en fonction du moment de référence (pour le mois et l'année, ok, mais la semaine ?!?)
+pour exprimer la durée de la fenêtre avec `rolling()`:
+- on ne peut pas utiliser les unités `M` ou `Y` qui sont, effectivement, susceptibles de varier en durée
+- on ne peut pas non plus utiliser `W` - cette fois pour de sombres raisons d'implémentation; utiliser `7D` à la place
+```{admonition} mais pourquoi ?
+:class: dropdown
+en fait en pandas `W` ça dénote une période qui va du lundi au samedi, ici on indique une durée !
+```
 ````
 
 +++
@@ -746,6 +782,7 @@ date_index = pd.date_range('2018-01-01', periods=100)
 X = np.arange(100)
 s = pd.Series(10*np.cos(X/10) + 2*np.cos(X), index=date_index)
 
+# il y a bien sûr un Series.plot() :)
 plt.figure()
 s.plot();
 ```
@@ -753,7 +790,10 @@ s.plot();
 voici l'effet du rolling avec des fenêtres de 1 semaine et 4 semaines
 
 ```{code-cell} ipython3
+# ici malheureusement on ne peut pas écrire
+# rolling_7 = s.rolling(window='7D', center=True).mean()
 rolling_7 = s.rolling(window=pd.Timedelta(7, 'D'), center=True).mean()
+
 rolling_28 = s.rolling(window=pd.Timedelta(28, 'D'), center=True).mean()
 ```
 
@@ -884,7 +924,7 @@ est-ce qu'on pourrait estimer ça autrement ?
 ```
 
 ```{code-cell} ipython3
-df_res = df2.resample('1w').mean()
+df_res = df2.resample('1W').mean()
 
 df_res.plot();
 ```
@@ -914,7 +954,7 @@ begin, end
 # cette fois c'est mieux
 # on doit ajouter 1 car toute semaine commencée est due ;)
 
-(end-begin) // pd.Timedelta('1w') + 1
+(end-begin) // pd.Timedelta('1W') + 1
 ```
 
 ```{code-cell} ipython3
@@ -982,8 +1022,8 @@ h |	hour | 		+/- 1.0e15 years | 	[1.0e15 BC, 1.0e15 AD]
 m |	minute | 	+/- 1.7e13 years | 	[1.7e13 BC, 1.7e13 AD]
 s |	second | 	+/- 2.9e11 years | 	[2.9e11 BC, 2.9e11 AD]
 ms| millisecond | 	+/- 2.9e8 years | 	[ 2.9e8 BC, 2.9e8 AD]
-us| microsecond | 	+/- 2.9e5 years | 	[290301 BC, 294241 AD]
-**ns** | **nanosecond** | 	**+/- 292 years**  |	**[ 1678 AD, 2262 AD]**
+**us**| **microsecond** | 	**+/- 2.9e5 years** | 	**[290301 BC, 294241 AD]**
+ns | nanosecond | 	+/- 292 years  |	[ 1678 AD, 2262 AD]
 ps| picosecond | 	+/- 106 days | 		[ 1969 AD, 1970 AD]
 fs| femtosecond | 	+/- 2.6 hours | 		[ 1969 AD, 1970 AD]
 as| attosecond | 	+/- 9.2 seconds | 	[ 1969 AD, 1970 AD]
@@ -992,6 +1032,8 @@ as| attosecond | 	+/- 9.2 seconds | 	[ 1969 AD, 1970 AD]
 +++
 
 ## Annexe 2 - le type de base Python `datetime`
+
+(label-python-datetime)=
 
 ````{admonition} →
 
@@ -1002,7 +1044,7 @@ en Python pur, on trouve dans la librairie standard [(`import datetime`)](https:
 
 **note**:  
 on **n'utilise pas directement** ces deux types en pandas  
-comme c'est tout de même la fondation du modèle, nous illustrons ici leur
+mais c'est tout de même la fondation du modèle; nous illustrons ici quelques manipes de base
 ````
 
 ```{code-cell} ipython3
