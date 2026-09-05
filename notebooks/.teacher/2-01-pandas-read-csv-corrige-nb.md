@@ -474,6 +474,92 @@ df[['Age', 'Sex']].head()
 
 +++ {"tags": ["framed_cell"]}
 
+### Copy on Write (CoW)
+
+````{admonition} → Copy on Write (CoW)
+:class: danger
+
+Depuis pandas 3.0, la sémantique de `df[colname]` est de renvoyer **une copie** de la série et non pas une référence vers la série originale
+
+:::{admonition} c'est différent pour `df[colname] = something`
+:class: warning dropdown
+en fait c'est un plus compliqué que ça, le comportement de `df[colname]` dépend selon que c'est ou non à gauche d'un signe `=`  
+mais bon ici on s'intéresse au cas où l'objet retourné par l'indexation ne se trouve pas être le sujet (à gauche donc) d'une affectation
+:::
+
+````
+
+Pour optimiser cela (et ne pas passer son temps à recopier dans tous les sens), pandas utilise un *pattern* de programmation qui s'appelle le ***Copy on Write***
+
+Voyons ça sur un exemple: on part d'une grosse table et
+1. on extrait une série en faisant donc `df[colname]`
+2. immédiatement après on va écrire dans la série - ici on modifie la première valeur
+3. puis enfin on va modifier la deuxième valeur
+
+vous allez voir que
+- pour la première opération:  
+  d'après ce qui précède cette opération devrait prendre un peu du temps puisqu'il faut tout recopier; vous allez voir que **ce n'est pas le cas**
+- par contre la seconde:  
+  elle va prendre **davantage de temps** ! en fait c'est à ce moment-là seulement que **la copie est effectivement faite** !
+- et la troisième opération:
+  elle est **rapide** à nouveau; on a déjà fait la copie, du coup ça prend un temps "normal"
+
+
+le résultat final, est c'est en fait là qu'on voulait en venir, c'est qu'à la fin de tout ça notre dataframe **n'est pas modifiée** !   
+et c'est *normal*, car on a **modifié une copie** de nos données, pas la dataframe...
+
+```{code-cell} ipython3
+# a simple helper function to create a ig table
+
+def big_table(N):
+    df = pd.DataFrame({'n': range(1, N + 1)})
+    df['square'] = df['n'] ** 2
+    return df
+
+big = big_table(100_000)
+big.head(3)
+```
+
+```{code-cell} ipython3
+%%time
+
+# 1. on extrait un bout de la dataframe
+# ce qui nous renvoie une copie
+# ça devrait donc prendre un peu du temps
+# mais en fait non !
+
+series = big['square']
+```
+
+```{code-cell} ipython3
+%%time
+
+# 2. on modifie la première valeur
+# c'est lent !
+# c'est parce que, comme c'est la première qu'on cherche à écrire, on copie d'abord
+# Copy before Write - en + court, Copy on Write
+
+%timeit series[0] = 1_000_000
+```
+
+```{code-cell} ipython3
+%%time
+
+# 3. on modifie la seconde valeur
+# cette fois c'est rapide, car plus besoin de faire la copie
+
+series[1] = 1_000_001
+```
+
+```{code-cell} ipython3
+# epilogue: 
+# la dataframe d'origine n'a pas été changée
+
+big.head(3)
+```
+
++++ {"tags": ["framed_cell"]}
+
 ### accès aux colonnes avec `df.`
 
 ````{admonition} →
