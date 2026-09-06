@@ -78,7 +78,7 @@ peut être indexé sous différentes dimensions et formes
 vous avez besoin d'**un seul index**
 
 ```python
-tab = np.arange(12)
+tab = np.arange(12) # from, to and step sont entiers
 tab[0] = np.pi
 ```
 
@@ -116,7 +116,7 @@ OUI on peut, parce que
 
 ```{code-cell} ipython3
 # le code
-tab = np.arange(12)
+tab = np.arange(12) # rom, to and step sont entiers
 tab[0] = np.pi
 tab[0].dtype, tab[0]
 ```
@@ -1007,3 +1007,11 @@ Les questions : j'ai un tableau `X` typé `float64` et de forme `(1000,)`
 
 * l'exercice vous invite à réfléchir à l'utilisation du paramètre `out=` qui est supporté dans les fonction vectorisées de numpy
 * dans ce cadre, sachez qu'on peut presque toujours remplacer l'usage d'un opérateur (comme ici `+`) par une fonction vectorisée (ici `np.add`)
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
+```
