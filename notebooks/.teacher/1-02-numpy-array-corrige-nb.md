@@ -329,19 +329,19 @@ mat.dtype
 ```
 
 
-**trompons-nous** et demandons un type `numpy.uint8`  
-- ancienne librairie `numpy` vous obéit et,  
-si elle rencontre un problème avec une valeur: elle modifie la valeur !
+**trompons-nous** et demandons un type `numpy.uint8`
 
 ```python
-mat = np.array(matrice, dtype=np.uint8)
-mat
--> [[128, 178, 224], # ouh là là ! 128 = 256 - 128
-                     # (complément à 2)
-    [ 17,   5, 127]], dtype=uint8
+try:
+    mat = np.array(matrice, dtype=np.uint8)
+    mat
+except OverflowError as e:
+    print(e)
+-> Python integer -128 out of bounds for uint8
+
 ```
-- nouvelle librairie `numpy`  
-   la conversion implicite n'est plus effectuée: le code échoue
+le code échoue avec une `OverflowError`  
+qui est ici rattrapée par un `try` `except` en `Python`
 ````
 
 ```{code-cell} ipython3
@@ -374,8 +374,6 @@ matrice = [
 ]
 try:
     mat = np.array(matrice, dtype=np.uint8)
-    # soit affichage du tableau avec les négatifs convertis implicitement par complément à 2
-    # soit échec: "Python integer -128 out of bounds for uint8"
     mat
 except OverflowError as e:
     print(e)
@@ -401,10 +399,9 @@ l = [[  0,   8,  34,   8],
 l = [[  0,   8,  34,   8],
      [255,  61, 128, 254]]
 print(    np.array(l, dtype=np.uint8)    )
-
+print()
 print(    np.array(l, dtype=np.int8)    )
-# note that new version of NumPy "will stop allowing conversion of out-of-bound Python integers to integer arrays.
-# The conversion of -128 to uint8 will fail in the future."
+# the conversion of -128 to uint8 fails with an OverflowError"
 ```
 
 +++ {"tags": ["framed_cell"]}
@@ -420,14 +417,22 @@ l = [[  0,   8,  34,   8],
      [255,  61, 128, 254]]
 
 mat = np.array(l)
-mat1 = mat.astype(np.int8)
+mat1 = mat.astype(np.int8)  # des conversions sont effectuées
 mat1
 ```
 
 
-`mat` et `mat1` ne partagent **pas** le tableau d'éléments sous-jacent  
-`mat1` est **une copie indépendante** avec la nouvelle taille et les éventuelles conversions  
-l'ancien `mat` existe toujours avec sa taille initiale
+- `mat` et `mat1` ne partagent **pas** le tableau d'éléments sous-jacent  
+- `mat1` est **une copie indépendante** avec la nouvelle taille et d'**éventuelles conversions**  
+- l'ancien `mat` existe toujours avec sa taille initiale
+
+Note: dans cet exemple des conversions sont effectuées  
+(sachant que les entiers relatifs sont codés en binaire en *complément à deux*  
+voir https://fr.wikipedia.org/wiki/Compl%C3%A9ment_%C3%A0_deux)  
+255 devient -1  
+128 devient -128  
+254 devient -2
+
 ````
 
 ```{code-cell} ipython3
@@ -436,7 +441,7 @@ l = [[  0,   8,  34,   8],
      [255,  61, 128, 254]]
 
 mat = np.array(l)
-print(    mat     )
+print(    mat.dtype     )
 mat1 = mat.astype(np.int8) # des conversions sont effectuées
 print(    mat1    )
 print(    mat     )
@@ -514,6 +519,7 @@ l = [-1, 2, 3]
 mat = np.array(l, np.int8) # vous imposez le type
 print(    mat    )
 print(    mat*100    )
+print(    mat.dtype    )
 ```
 
 +++ {"tags": ["framed_cell"]}
@@ -551,10 +557,10 @@ vous devez indiquer à la fonction `numpy.zeros` la forme du tableau
 ```python
 zorro = np.zeros(shape=(4, 5))
 zorro
--> [[0., 0., 0., 0., 0.],
-    [0., 0., 0., 0., 0.],
-    [0., 0., 0., 0., 0.],
-    [0., 0., 0., 0., 0.]]
+-> array([[0., 0., 0., 0., 0.],
+          [0., 0., 0., 0., 0.],
+          [0., 0., 0., 0., 0.],
+          [0., 0., 0., 0., 0.]])
 ```
 
 
@@ -563,10 +569,10 @@ on peut donner d'autres paramètres, comme le type des éléments...
 ```python
 zorro1 = np.zeros(shape=(4, 5), dtype=np.uint64)
 zorro1
--> [[0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0]
+-> array([[0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0]], dtype=uint64)
 ```
 ````
 
@@ -823,7 +829,7 @@ plt.imshow(img);
 
 ```python
 %timeit 1 + 1
--> 8.16 ns ± 0.124 ns per loop (mean ± std. dev. of 7 runs, 100000000 loops each)
+-> 3.25 ns ± 0.0261 ns per loop (mean ± std. dev. of 7 runs, 100,000,000 loops each)
 ```
 la moyenne et l'écart-type des temps d'exécution de l'instruction `1 + 1` ont été calculés  
 (cela a été fait 7 fois et le meilleur résultat a été pris, voir le help)
@@ -832,7 +838,7 @@ la moyenne et l'écart-type des temps d'exécution de l'instruction `1 + 1` ont 
 
 ```python
 %timeit -n 10000 1 + 1
--> 12.5 ns ± 3.4 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+-> 3.12 ns ± 0.0221 ns per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
 ```
 
 `ns` = nano-seconde
