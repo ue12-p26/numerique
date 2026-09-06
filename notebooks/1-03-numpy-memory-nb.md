@@ -74,7 +74,7 @@ mat =  np.array(
 mat
 ```
 
-la mémoire occupée en mémoire en nombre d'octets (byte)
+la mémoire occupée en mémoire en nombre d'octets (bytes)
 
 ```{code-cell} ipython3
 mat.nbytes
@@ -261,7 +261,7 @@ Que signifie `5` ?
 
 `numpy` cherche le plus petit type pour stocker les chaînes de caractères initiales
 
-ici une case est constituée d'un tableau d'au plus 5 caractères  
+ici une case (un élément) est un tableau d'au plus 5 caractères  
 (une case n'est pas l'adresse d'une chaîne de caractère mais bien la valeur de la chaîne)
 
 +++
@@ -499,7 +499,7 @@ seg = np.array(l).reshape(2, 5, 3)
 
 ```python
 seg = np.arange(0, 30)
-seg.resize(5, 6) # resize modifie le tabeau en place
+seg.resize(5, 6) # resize modifie le tableau en place
 seg.resize(2, 5, 3)
 ```
 
@@ -557,4 +557,8 @@ du coup pour contruire un **tuple** qui ne contient que un élément, je vous re
 
 ```{code-cell} ipython3
 # votre code
+```
+
+```{code-cell} ipython3
+
 ```

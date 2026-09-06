@@ -63,7 +63,7 @@ n = 10000000
 x = np.linspace(0, 2*np.pi, n)
 
 y = []
-for e in x:   # NON IL NE FAUT PAS FAIRE UN FOR !!`
+for e in x:   # NON IL NE FAUT PAS FAIRE UN FOR !!
     y.append(np.sin(e))
 ```
 ````
@@ -175,7 +175,7 @@ En conclusion, vous **devez** toujours utiliser les `ufunc` et plus jamais les `
 
 * même si ça vous paraît plus difficile
 * même si vous utilisiez des `for-python` en prépa
-* par souci de la **performance en temps**, et de propreté de votre code, vous ne pouvez plus y échapper
+* par souci de la **performance en temps** et de la propreté de votre code : vous ne pouvez plus y échapper
 
 Une habitude à prendre:
 
@@ -403,7 +403,7 @@ absolute([-10, -20, 30])
 
 notez bien que cette façon de faire est plus une commodité qu'autre chose, et ne pensez pas que le traitement va être accéléré pour autant
 
-ci-dessous on va reprendre la même idée que `absolute` avec, juste pour changer, une fonction qui vaut $x^2$ sur les néftifs et $X^3$ sur les positifs  
+ci-dessous on va reprendre la même idée que `absolute` avec, juste pour changer, une fonction qui vaut $x^2$ sur les négatifs et $x^3$ sur les positifs  
 vous allez constater que l'on peut accélérer considérablement les choses par rapport à `np.vectorize`, au prix d'une empreinte mémoire plus importante 
 
 bref, ne pas hésiter surtout à benchmarker !
@@ -432,11 +432,12 @@ def x2_x3_vec(x):
 
 ```{code-cell} ipython3
 # on peut faire beaucoup mieux avec ce code
-# le défaut c'est qu'on calcule 3 tableaux de la même taille 
+# le défaut c'est qu'on calcule 3 tableaux de la même taille
+# X, X<0 et X**2 ou X**3
 # en plus du tableau résultat
 
 def x2_x3_where(x):
-    return np.where( x<0, x**2, x**3)
+    return np.where(x<0, x**2, x**3)
 
 %timeit x2_x3_where(X)
 ```
