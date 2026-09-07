@@ -437,7 +437,7 @@ print(    mat     )
 
 +++ {"tags": ["framed_cell"]}
 
-## `numpy` calcule à taille constante
+ ## `numpy` calcule à taille constante
 
 ````{admonition} →
 créons un tableau avec des éléments de type entier (type par défaut)
@@ -467,6 +467,12 @@ mat = np.array(l, np.int8)
 mat
     -> [-1, 2, 3]
 ```
+
+::::{admonition} `int8` ça veut dire quoi au juste ?
+:class: dropdown
+`int` signifie entier *signé*, et `uint` signifie non signé (`u` = *unsigned*);  
+vous trouverez [plus de détails dans le TP sur le son ici](https://numerique-exos.info-mines.paris/numpy-tps/sounds/readme-sounds-nb/#entiers-sign-s-ou-non)
+::::
 
 multiplions les éléments du tableau `mat` par `100`
 

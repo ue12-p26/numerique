@@ -433,17 +433,13 @@ et des tableaux **hétérogènes**
 
 **structures de ces données ?**
 
-Python ne possède pas de type adapté à ces tableaux multi-dimensionnels
-
-depuis 2006, une librairie numérique `numpy` est *développée* pour cela
-
-non intégrée au core-langage Python par souci de maintenance du code
-
-elle est LA librairie numérique incontournable de Python
-
-elle étend Python avec la manipulation de tableaux multi-dimensionnels
-
-c'est une bibliothèque libre et open source
-
-`SciPy` (ScientificPython) pour le calcul scientifique est fondée sur `numpy`
+- Python ne possède pas de type natif adapté à ces tableaux multi-dimensionnels
+- depuis 2006, **la librairie numérique `numpy`** est développée pour les **tableaux homogènes**:
+  - non intégrée au core-langage Python par souci de maintenance du code
+  - elle est LA librairie numérique incontournable de Python
+  - elle étend Python avec la manipulation de tableaux multi-dimensionnels
+  - c'est une bibliothèque libre et open source
+- depuis 2009, **la librairie `pandas`** permet de gérer les données hétérogènes (comme nos *csv* du début)
+  - `pandas` reposait historiquement sur `numpy`, même si c'est de moins en moins le cas
+- de très nombreuses autres librairies reposent sur `numpy`, comme par exemple `SciPy` (ScientificPython) pour le calcul scientifique
 ````
