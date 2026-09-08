@@ -72,7 +72,7 @@ project:
         - pattern: 3-[0-9]*-nb.md
         - pattern: .teacher/3*-corrige-nb.md
           hidden: true
-    - title: cheatsheets
+    - title: extras
       children:
         - pattern: 4-[0-9]*-nb.md
     - title: rappels Python
