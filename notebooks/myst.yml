@@ -24,7 +24,7 @@ project:
     - pandas
     - matplotlib
     - Jupyter
-  date: 2025-06-01
+  date: 2026-09-01
   jupyter:
     lite: true
   # bibliography: []
