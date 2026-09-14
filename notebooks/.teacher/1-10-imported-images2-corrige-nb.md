@@ -197,6 +197,40 @@ def patchwork(colors, side=10, background=[169, 169, 169]):
 ```
 
 ```{code-cell} ipython3
+l, c = rectangle_size(len(colors))
+print(l, c)
+cols = np.array(colors, dtype=np.uint8)
+side = 1
+im = np.empty(shape=(l*side, c*side, 3), dtype=np.uint8)
+im[:] = [255, 255, 255]
+plt.imshow(im)
+```
+
+```{code-cell} ipython3
+cols.shape, cols
+```
+
+```{code-cell} ipython3
+all_colors = colors + [[0, 0, 0]]*(l*c - len(colors))
+```
+
+```{code-cell} ipython3
+im.shape
+```
+
+```{code-cell} ipython3
+imr = im.reshape((6, 3))
+```
+
+```{code-cell} ipython3
+imr[:] = all_colors
+```
+
+```{code-cell} ipython3
+plt.imshow(im)
+```
+
+```{code-cell} ipython3
 # prune-cell 2.
 
 def patchwork(raw_colors, side=5, background=[169, 169, 169]):

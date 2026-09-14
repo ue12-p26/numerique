@@ -11,11 +11,20 @@ kernelspec:
   name: python3
 language_info:
   name: python
-  nbconvert_exporter: python
   pygments_lexer: ipython3
+  nbconvert_exporter: python
 ---
 
 # *broadcasting*
+
++++
+
+**mardi 15 septembre :**
+- faire très rapidement - rien de spécial
+- les formes doivent être compatibles
+- matrice + ligne 
+- matrice + colonne - attention à la forme de la colonne
+- ligne + colonne = matrice
 
 ```{code-cell} ipython3
 import numpy as np
@@ -26,34 +35,6 @@ import numpy as np
 comment `numpy` traite intelligemment les tableaux de formes différentes lors des opérations
 
 les règles de broadcasting
-
-+++
-
-## opération sur des tableaux de même forme
-
-+++
-
-**Exercices**
-
-1. créez un premier tableau des 120 premiers entiers  
-avec la forme de 2 groupes et 3 matrices de 4 lignes, et nombre de colonnes adéquat
-
-1. créez un second tableau de 120 flottants équidistants entre 0 et 1  
-donnez lui la même forme que le premier tableau
-
-1. utilisez `np.round` pour arrondir les flottants à 2 décimales  
-sans création d'un nouveau tableau (pensez à `out=`)
-
-1. utilisez `np.add` pour ajouter les deux tableaux  
-  a. en créant un troisième tableau pour ranger le résultat  
-  b. en rangeant le résultat dans le premier tableau (avec le paramètre `out`) ?
-
-1. renversez le premier tableau  
-  selon tous les axes
-
-```{code-cell} ipython3
-# votre code
-```
 
 +++ {"tags": ["framed_cell"]}
 

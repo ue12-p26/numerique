@@ -54,6 +54,8 @@ ou toute autre librairie d'affichage que vous aimez et/ou savez utiliser: `seabo
 
 ```{code-cell} ipython3
 # votre code
+import numpy as np
+from matplotlib import pyplot as plt
 ```
 
 2. optionnel - changez la taille par défaut des figures matplotlib
@@ -101,12 +103,17 @@ ou toute autre librairie d'affichage que vous aimez et/ou savez utiliser: `seabo
 
 ```{code-cell} ipython3
 # votre code
+im = np.empty(shape=(91, 201, 3), dtype=np.uint8)
+plt.imshow(im)
 ```
 
 2. Transformez le en tableau blanc (en un seul slicing) et affichez-le
 
 ```{code-cell} ipython3
 # votre code
+im[:] = 255
+plt.imshow(im)
+im.shape
 ```
 
 3. Transformez le en tableau vert (en un seul slicing) et affichez-le
@@ -119,12 +126,16 @@ ou toute autre librairie d'affichage que vous aimez et/ou savez utiliser: `seabo
 
 ```{code-cell} ipython3
 # votre code
+im[0, 0, 0], im[-1, -1, -1]
 ```
 
 5. Faites un quadrillage d'une ligne bleue, toutes les 10 lignes et colonnes et affichez-le
 
 ```{code-cell} ipython3
 # votre code
+im[:] = [255, 0, 255]
+im[::10, ::10] = [0, 0, 255]
+plt.imshow(im)
 ```
 
 ## lecture d'une image en couleur
@@ -135,12 +146,15 @@ ou toute autre librairie d'affichage que vous aimez et/ou savez utiliser: `seabo
 
 ```{code-cell} ipython3
 # votre code
+im = plt.imread('data/les-mines.jpg').copy()
+plt.imshow(im)
 ```
 
 2. Vérifiez si l'objet est modifiable avec `im.flags.writeable`; si il ne l'est pas, copiez l'image
 
 ```{code-cell} ipython3
 # votre code
+im.flags.writeable
 ```
 
 3. Affichez l'image
@@ -157,17 +171,22 @@ ou toute autre librairie d'affichage que vous aimez et/ou savez utiliser: `seabo
 
 5. Quelle est la dimension de l'image ?
 
-+++
+```{code-cell} ipython3
+
+```
 
 6. Quelle est la taille de l'image en hauteur et largeur ?
 
 ```{code-cell} ipython3
 # votre code
+im.shape
 ```
 
 7. Quel est le nombre d'octets utilisé par pixel ?
 
-+++
+```{code-cell} ipython3
+im.dtype
+```
 
 8. Quel est le type des pixels ?  
 (deux types pour les pixels: entiers non-signés 8 bits ou flottants sur 64 bits)

@@ -17,6 +17,11 @@ language_info:
 
 # fonctions d'agrégation
 
++++
+
+**mardi 15 septembre :**
+- faire très rapidement sans exercices
+
 ```{code-cell} ipython3
 import numpy as np
 ```
@@ -326,12 +331,6 @@ tab = np.arange(120).reshape(2, 3, 4, 5)
  tab.sum(axis=1).shape == (2, 4, 5),
  tab.sum(axis=2).shape == (2, 3, 5),
  tab.sum(axis=3).shape == (2, 3, 4))
-```
-
-```{code-cell} ipython3
-:lines_to_next_cell: 0
-
-tab.sum(axis=0)
 ```
 
 +++ {"tags": ["level_advanced"]}

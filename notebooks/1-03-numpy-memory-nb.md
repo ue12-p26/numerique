@@ -505,6 +505,23 @@ seg.resize(2, 5, 3)
 
 si aucune mémoire n'est créée, c'est que les différentes indexations prises sur un tableau  
 **partagent l'objet sous-jacent**
+
+- `np.shares_memory` permet de vérifier si deux tableaux partagent leurs octets en mémoire
+    
+```python
+tab1 = np.arange(0, 30)
+tab2 = tab1.reshape(2, -1) # note le -1 pour déduire (ici 15)
+np.shares_memory(tab1, tab2)
+-> True
+```
+
+```python
+tab1 = np.arange(0, 30)
+tab2 = tab1.copy()
+np.shares_memory(tab1, tab2)
+-> False
+```
+
 ````
 
 ```{code-cell} ipython3
@@ -519,10 +536,22 @@ print(seg)
 ```{code-cell} ipython3
 # le code
 seg = np.arange(0, 30)
-seg.resize(5, 6) # resize modifie le tabeau en place
+seg.resize(5, 6) # resize modifie le tableau en place
 print(seg)
 seg.resize(2, 5, 3)
 print(seg)
+```
+
+```{code-cell} ipython3
+tab1 = np.arange(0, 30)
+tab2 = tab1.reshape(2, -1)
+np.shares_memory(tab1, tab2)
+```
+
+```{code-cell} ipython3
+tab1 = np.arange(0, 30)
+tab2 = tab1.copy()
+np.shares_memory(tab1, tab2)
 ```
 
 ### mémoire partagée

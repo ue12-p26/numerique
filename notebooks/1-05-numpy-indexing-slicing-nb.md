@@ -17,6 +17,14 @@ language_info:
 
 # indexation et *slicing*
 
++++
+
+**mardi 15 septembre :**
+- difference slicing `python` copy /`numpy` view
+- slicing dim > 1
+- modification de sous-tableaux
+- `np.indices` + zebre + damier pour les plus rapides
+
 ```{code-cell} ipython3
 import numpy as np
 from matplotlib import pyplot as plt
@@ -258,7 +266,7 @@ tab.shape
 **exercice**
 
 1. faites un `np.ndarray` de forme `(3, 2, 5, 4)`  
-   avec des nombre aéatoires entiers entre 0 et 100
+   avec des nombre aléatoires entiers entre 0 et 100
 
 
 2. affichez-le et

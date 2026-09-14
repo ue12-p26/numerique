@@ -11,13 +11,21 @@ kernelspec:
   name: python3
 language_info:
   name: python
-  nbconvert_exporter: python
   pygments_lexer: ipython3
+  nbconvert_exporter: python
 ---
 
 (label-numpy-mask)=
 
 # tests et masques sur tableaux
+
++++
+
+**mardi 15 septembre :**
+- faire soigneusement
+- masque booléen
+- combinaison `&` (and), `|` (or) `~`
+- l'avancé indexation 
 
 ```{code-cell} ipython3
 import numpy as np
@@ -384,6 +392,8 @@ tab = np.array([[1, 2, 3], [4, 5, 6]])
 tab[tab % 2 == 0] = 100
 print(tab)
 ```
+
+cours mardi 15 septembre *end*
 
 +++ {"tags": ["framed_cell", "level_intermediate"]}
 
