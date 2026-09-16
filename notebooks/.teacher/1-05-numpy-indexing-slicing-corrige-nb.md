@@ -780,7 +780,7 @@ M
 
 +++
 
-Écrivez une fonction `zebre`, qui prend en argument un entier *n* et qui fabrique un tableau carré de coté `n`, formé d'une alternance de colonnes de 0 et de colonnes de 1.
+Écrivez une fonction `stripes`, qui prend en argument un entier *n* et qui fabrique un tableau carré de coté `n`, formé d'une alternance de colonnes de 0 et de colonnes de 1.
 
 +++
 
@@ -793,7 +793,28 @@ par exemple pour `n=4` on s'attend à ceci
 0 1 0 1
 ```
 
-+++
+```{code-cell} ipython3
+:tags: [level_basic]
+
+# à vous
+def stripes(n):
+    pass
+```
+
+```{code-cell} ipython3
+# prune-cell
+def stripes(n):
+    result = np.zeros((n, n), dtype=np.uint8)
+    result[:, 1::2] = 1
+    return result
+```
+
+```{code-cell} ipython3
+:tags: [level_intermediate]
+
+# pour tester
+stripes(4)
+```
 
 ### le damier
 
@@ -819,6 +840,8 @@ array([[0, 1, 0, 1, 0],
 ```
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # a vous de jouer
 
 def checkers(n, up_left=True):
@@ -831,15 +854,28 @@ def checkers(n, up_left=True):
 def checkers(n, up_left = True):
     I, J = np.indices((n, n))
     return (I + J + up_left) % 2
+
+# ou encore, sans doute efficace
+def checkers(n, up_left=True):
+    result = np.ones((n, n), dtype=np.uint8)
+    result[1::2, ::2] = 0
+    result[::2, 1::2] = 0
+    if not up_left:
+        result = 1-result
+    return result
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # pour tester
 
 checkers(4)
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 checkers(5, False)
 ```
 
@@ -878,7 +914,7 @@ array([[0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1],
 ```
 
 ```{code-cell} ipython3
-:tags: [level_advanced]
+:tags: [level_basic]
 
 #  vous de jouer
 
@@ -897,13 +933,13 @@ def block_checkers(n, k):
 ```
 
 ```{code-cell} ipython3
-:tags: [level_advanced]
+:tags: [level_intermediate]
 
 block_checkers(3, 2)
 ```
 
 ```{code-cell} ipython3
-:tags: [level_advanced]
+:tags: [level_intermediate]
 
 # doit vous donner la figure ci-dessus
 # éventuellement avec des False/True au lieu de 0/1
@@ -911,11 +947,11 @@ block_checkers(3, 2)
 block_checkers(4, 3)
 ```
 
-### les escaliers
+### la pyramide
 
 +++
 
-Écrivez une fonction *escalier*, qui prend en argument un entier *n*, qui crée un tableau de taille *2n+1*, et qui le remplit de manière à ce que:
+Écrivez une fonction `pyramid`, qui prend en argument un entier *n*, qui crée un tableau de taille *2n+1*, et qui le remplit de manière à ce que:
 
 - aux quatre coins du tableau on trouve la valeur *0*
 - dans la case centrale on trouve la valeur *2n*
@@ -925,7 +961,7 @@ block_checkers(4, 3)
 par exemple
 
 ```python
->>> stairs(4)
+>>> pyramid(4)
 
 array([[0, 1, 2, 3, 4, 3, 2, 1, 0],
        [1, 2, 3, 4, 5, 4, 3, 2, 1],
@@ -939,18 +975,21 @@ array([[0, 1, 2, 3, 4, 3, 2, 1, 0],
 ```
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # à vous de jouer
 
-def stairs(n):
+def pyramid(n):
     pass
 ```
 
 ```{code-cell} ipython3
 # prune-cell
 
-def stairs(taille):
+def pyramid(taille):
     """
-    la pyramide en escaliers
+    la pyramide de taille carrée 2n+1
+    avec 0 dans les coins
     """
     # on calcule la taille totale
     total = 2 * taille + 1
@@ -969,8 +1008,10 @@ def stairs(taille):
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # pour vérifier
-stairs(4)
+pyramid(4)
 ```
 
 +++ {"tags": ["level_advanced"]}
@@ -1007,11 +1048,3 @@ Les questions : j'ai un tableau `X` typé `float64` et de forme `(1000,)`
 
 * l'exercice vous invite à réfléchir à l'utilisation du paramètre `out=` qui est supporté dans les fonction vectorisées de numpy
 * dans ce cadre, sachez qu'on peut presque toujours remplacer l'usage d'un opérateur (comme ici `+`) par une fonction vectorisée (ici `np.add`)
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
