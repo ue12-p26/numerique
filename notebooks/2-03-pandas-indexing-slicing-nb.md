@@ -28,7 +28,7 @@ import numpy as np # pandas reposant sur numpy on a souvent besoin des deux libr
 ````{admonition} →
 manipuler des **parties** (vues) de nos données est une **opération fréquente** en traitement des données
 
-d'où l'importance de savoir localiser dans nos tables `pandas` des sous-parties  
+d'où l'importance de savoir ***localiser*** dans nos tables `pandas` des sous-parties  
 (élément, ligne, colonne, sous-séries, sous dataframes)  
 afin de leur appliquer une fonction
 
@@ -250,8 +250,8 @@ donc déjà on sait qu'on ne pourra pas écrire quelque chose comme
 
 ````{admonition} →
 première chose à retenir donc, les accès dans la dataframe  
-se font **au travers de 2 accessoires `loc`** et `iloc`  
-qui prennent cette fois-ci **leurs arguments *dans le bon sens*** (ligne, colonne)
+se font **au travers de 2 accessoires**: surtout `.loc` - et moins souvent `.iloc`  
+qui prennent cette fois-ci **leurs arguments *dans le bon sens*:** (ligne, colonne)
 
 `df.loc[index_ligne, index_colonne]` **OUI**  
 `df.iloc[indice_ligne, indice_colonne]` **OUI**  
@@ -275,19 +275,23 @@ df.tail(1)
 PassengerId                                                     ...
 832                 1       2  Richards, Master. George Sibley  ...  18.75    NaN         S
 
-# accès par l'index
+# --- accès par l'index
 # pour les lignes: la valeur de 'PassengerId'
 # pour les colonnes: les noms des colonnes
+
 df.loc[552, 'Name']
 -> 'Sharp, Mr. Percival James R'
 
-# accès par indice (plus rare en pratique)
+# --- accès par indice (plus rare en pratique)
 # attention la colonne d'index ne compte pas
 # i.e. la colonne d'indice 0 est 'Survived'
+
 df.iloc[0, 2]
 -> 'Sharp, Mr. Percival James R'
 
-# pareil avec un indice négatif
+# --- pareil avec un indice négatif
+# ici le nom dans la dernière ligne
+
 df.iloc[-1, 2]
 -> 'Richards, Master. George Sibley'
 ```
@@ -378,26 +382,31 @@ df.loc[552]
 # indexation par une liste
 # bien sûr les index choisis
 # ne pas forcément contigus
+
 df.loc[[552, 832]]
 ```
 
 ```{code-cell} ipython3
 # choisir plusieurs lignes et plusieurs colonnes
+
 df.loc[[552, 832], ['Name', 'Pclass']]
 ```
 
 ```{code-cell} ipython3
 # la même avec iloc
+
 df.iloc[[0, -1], [2, 1]]
 ```
 
 ```{code-cell} ipython3
 # plusieurs colonnes avec .loc
+
 df.loc[:, ['Name', 'Pclass']]
 ```
 
 ```{code-cell} ipython3
 # .loc avec un masque (généralement sur les lignes)
+
 df.loc[df.Pclass == 1, ['Name', 'Sex']]
 ```
 
@@ -453,31 +462,35 @@ df.loc[ 638:261, 'Pclass': 'Age']
 
 ```{code-cell} ipython3
 # les ids des 5 premières lignes
+
 df.index[:5]
 ```
 
 ```{code-cell} ipython3
 # les noms des 5 premières colonnes
+
 df.columns[:5]
 ```
 
 ```{code-cell} ipython3
 # slice avec loc -> inclusif
+
 df.loc[ 638:261, 'Pclass': 'Age'].shape # (3, 4)
 ```
 
 ```{code-cell} ipython3
 # le code
+
 df.loc[ 638:261, 'Pclass': 'Age']
 ```
 
 ````{tip}
-avec la méthode `get_loc()` sur un objet Index, on peut facilement obtenir l'indice d'un index
+avec la méthode `get_loc()` sur un objet `Index`, on peut facilement obtenir l'indice d'un index
 ````
 
 ```{code-cell} ipython3
-# remarquons une méthode des Index
-# pour obtenir l'indice d'un index
+# exemple d'utilisation de get_loc
+
 df.columns.get_loc('Pclass'), df.index.get_loc(261)
 ```
 
@@ -506,6 +519,7 @@ df.iloc[1:7, 1:4].shape
 
 ```{code-cell} ipython3
 # le code
+
 df.iloc[1:7, 1:4].shape
 ```
 
