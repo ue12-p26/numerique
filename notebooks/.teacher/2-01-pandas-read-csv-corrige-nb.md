@@ -155,10 +155,8 @@ la table est une instance de `pandas.DataFrame`
 
 ```python
 type(df)
--> pandas.core.frame.DataFrame
+-> pandas.DataFrame
 ```
-
-(`pandas.core.frame.DataFrame` est le même type que `pandas.DataFrame`)
 
 la méthode `df.head()` affiche les qq premières lignes
 
@@ -166,8 +164,8 @@ la méthode `df.head()` affiche les qq premières lignes
 df.head(2)
 ```
 
-```{admonition} note
-:class: attention
+```{admonition} une méthode ?
+:class: attention dropdown
 
 quand on écrit "la méthode `df.head`", ça se lit comme:  
 l'attribut `head` recherché à partir de l'objet `df`  
@@ -179,12 +177,6 @@ comme `df` est une dataframe, on trouve la méthode/fonction qui se trouve être
 # le code
 df = pd.read_csv('data/titanic.csv')
 type(df)
-```
-
-```{code-cell} ipython3
-# pour vous convaincre que les types sont bien les mêmes
-
-pd.core.frame.DataFrame is pd.DataFrame
 ```
 
 ```{code-cell} ipython3
@@ -261,7 +253,7 @@ min    1.00        0.00     1.00   0.42    0.00    0.00    0.00
 max    891.00      1.00     3.00   80.00   8.00    6.00    512.32
 ```
 
-on remarque que `pandas.DataFrame.describe`
+on remarque que `df.describe()`
 
 * a, par défaut, appliqué les calculs sur **les colonnes numériques**  
 même quand ça n'a pas forcément beaucoup d'intérêt - voir `Survived` ou `Pclass`  
@@ -327,6 +319,14 @@ df['Age'].describe()
 
 ## les index et indices des tables
 
+:::{admonition} si vous préférez: les ***noms*** et ***rangs*** des tables
+:class: tip dropdown
+les deux termes *index* et *indice* sont très proches et peuvent prêter à confusion  
+aussi si vous préférez vous pouvez pour l'instant les assimiler à:
+- *index* est synonyme de *nom*; par exemple quand j'écris `df['Survived']`, `'Survived'` est un index (dans les colonnes)
+- *indice* est synonyme de *rang*; je pourrais aussi écrire à la place `df[1]`, comme on parle de la deuxième colonne; ici `1` est un indice
+:::
+
 +++ {"tags": ["framed_cell"]}
 
 ### la notion d'index
@@ -344,7 +344,6 @@ deux constats
 
 * rechercher dans une liste est très inefficace  
 (en moyenne $n/2$ essais pour localiser un élément dans une liste de $n$ éléments)
-
 * accéder au $i^{ème}$ élément d'un tableau est très efficace  
 (on est en *temps constant* - on ne parcourt bien sûr pas les éléments de $0$ à $i-1$)
 
@@ -353,20 +352,23 @@ deux constats
 
 * trouver une caractéristique qui identifie une observation de manière unique  
 (genre *numéro de sécurité sociale* pour un individu, ici par exemple le `PassengerId`)
-
 * calculer un index à partir de cette caractéristique  
 qui soit *le plus unique* possible (pour avoir peu de collisions)
-
 * utiliser cet index comme entrée dans une table
 * la recherche peut alors être considérée comme en temps constant  
   comme l'accès à un élément d'un tableau
-
 * c'est la technique des **tables de hachage** (comme les `dict` ou `set` Python)
 
 `pandas` indexe ses lignes et ses colonnes suivant vos indications  
 dit autrement, c'est à vous de choisir parmi les colonnes
 celle(s) qui peut servir d'identificateur pour servir d'index  
-(un index en `pandas` n'est pas obligatoirement unique)
+
+:::{admonition} unicité des index ?
+:class: warning dropdown
+normalement, un index est unique (comme par exemple, à nouveau, un numéro de Securité Sociale)  
+toutefois, avec `pandas` **l'unicité n'est pas requise**;  
+et ça peut être pratique, notamment de manière transitoire pendant la phase de nettoyage/mise en forme des données...
+:::
 ````
 
 +++
@@ -420,7 +422,7 @@ df.columns[0]
 ````{admonition} →
 les colonnes ont un traitement privilégié en `pandas`
 
-une table `pandas` est un "dictionnaire"
+on peut voir une table `pandas` comme un **dictionnaire**
 
 * où les clés sont les noms des colonnes
 * où les valeurs sont les colonnes (**de type `Series`**)
@@ -456,7 +458,7 @@ en cas d'accès, il vous les donne toutes
 ```{code-cell} ipython3
 :cell_style: split
 
-df['Age'].head(2)
+df['Age'].head(4)
 ```
 
 ```{code-cell} ipython3
@@ -484,7 +486,7 @@ Depuis pandas 3.0, la sémantique de `df[colname]` est de renvoyer **une copie**
 :::{admonition} c'est différent pour `df[colname] = something`
 :class: warning dropdown
 en fait c'est un plus compliqué que ça, le comportement de `df[colname]` dépend selon que c'est ou non à gauche d'un signe `=`  
-mais bon ici on s'intéresse au cas où l'objet retourné par l'indexation ne se trouve pas être le sujet (à gauche donc) d'une affectation
+mais bon dans l'immédiat on s'intéresse au cas où `df[colname]` **ne se trouve pas** être le sujet (à gauche donc) d'une **affectation**
 :::
 
 ````
@@ -505,11 +507,11 @@ vous allez voir que
   elle est **rapide** à nouveau; on a déjà fait la copie, du coup ça prend un temps "normal"
 
 
-le résultat final, est c'est en fait là qu'on voulait en venir, c'est qu'à la fin de tout ça notre dataframe **n'est pas modifiée** !   
+et le résultat final, c'est qu'à la fin de tout ça, notre dataframe **n'est pas modifiée** !!  
 et c'est *normal*, car on a **modifié une copie** de nos données, pas la dataframe...
 
 ```{code-cell} ipython3
-# a simple helper function to create a ig table
+# a simple helper function to create a big table
 
 def big_table(N):
     df = pd.DataFrame({'n': range(1, N + 1)})
@@ -552,8 +554,9 @@ series[1] = 1_000_001
 ```
 
 ```{code-cell} ipython3
-# epilogue: 
-# la dataframe d'origine n'a pas été changée
+# EPILOGUE
+# si vous ne devez retenir qu'une seule chose, c'est ceci:
+# la dataframe d'origine N'A PAS été changée:
 
 big.head(3)
 ```
@@ -570,13 +573,9 @@ Cette notation est **plus lisible** mais aussi **plus limitée**
 par exemple ne fonctionne pas si le nom de la colonne contient un espace
 
 Il faut le voir uniquement comme *une commodité*  
-**Pas forcément recommandé aux débutants**  
-Mais c'est *très utilisé* - il faut savoir le lire
+**pas forcément recommandé aux débutants**  
+mais c'est *très utilisé* - surtout parce plus lisible - et donc il faut savoir le lire
 
-```python
-df.Age is df['Age']
--> True
-```
 ````
 
 ```{code-cell} ipython3
@@ -588,12 +587,6 @@ df.Age is df['Age']
 df.Age
 ```
 
-```{code-cell} ipython3
-:cell_style: split
-
-df.Age is df['Age']
-```
-
 +++ {"tags": ["framed_cell"]}
 
 ### type des colonnes `pandas.Series`
@@ -601,7 +594,7 @@ df.Age is df['Age']
 ````{admonition} →
 ```python
     type(df['Age'])
--> pandas.core.series.Series
+-> pandas.Series
 ```
 
 le second type en `pandas` est le type des colonnes, qui sont des `Series`
@@ -635,6 +628,7 @@ pour cela, trois options
 
    ```python
    # option 1
+
    df = pd.read_csv('data/titanic.csv', index_col='PassengerId')
    ```
 
@@ -642,10 +636,11 @@ pour cela, trois options
 
    ```python
    # option 2
+
    df = pd.read_csv('data/titanic.csv')
    df = df.set_index('PassengerId')
    ```
-    
+
 3. après coup sans ré-affecter df
 
    ```python
@@ -657,15 +652,14 @@ observez le changement dans la présentation de la table
 ````
 
 ```{code-cell} ipython3
-# le code
-# option 1.
+# le code - option 1.
 df = pd.read_csv('data/titanic.csv', index_col='PassengerId')
 ```
 
 ```{code-cell} ipython3
-# le code
-# option 2.
+# le code - option 2.
 df = pd.read_csv('data/titanic.csv')
+
 # la table avant
 df.head(1)
 ```
@@ -674,18 +668,40 @@ df.head(1)
 # la table après
 # remarquez que 'PassengerId'
 # n'est plus présenté de la même manière
+
 df = df.set_index('PassengerId')
 df.head(1)
 ```
 
 ```{code-cell} ipython3
-# le code
-# option 2-bis
-# la méthode set_index avec son paramètre inplace à True modifie directement la table sans renvoyer une nouvelle dataframe
+# le code - option 3
+# la méthode set_index avec son paramètre inplace à True
+# modifie directement la table sans renvoyer une nouvelle dataframe
+
 df = pd.read_csv('data/titanic.csv')
 df.set_index('PassengerId', inplace=True)
 df.head(1)
 ```
+
+::::{admonition} `inplace=True`
+:class: warning
+faisons comme si vous aviez lu vite fait, et essayez d'exécuter ceci
+qui est subtilement faux et franchement désastreux:
+```python
+df = pd.read_csv('data/titanic.csv')
+df = df.set_index('PassengerId', inplace=True)
+df.head(1)
+```
+
+*what on earth is going on ?*
+
+:::{admonition} réponse
+:class: dropdown
+d'après un *pattern* de programmation que vous retrouverez quasiment partout,
+lorsqu'on stipule `inplace=True`, la fonction renvoie `None`  
+et on ne peut pas faire `None.head()`, ça ne veut rien dire !
+:::
+::::
 
 +++ {"tags": ["framed_cell"]}
 
@@ -745,10 +761,10 @@ df['Name'][552]
 ### différence entre index et indice
 
 ````{admonition} →
-les **indices** c'est quand on compte nos éléments à partir de `0`  
+les **indices** (les rangs) c'est quand on compte nos éléments à partir de `0`  
 (c'est valable pour les colonnes comme pour les lignes)
 
-les **index** c'est quand on utilise des valeurs fournies par l'utilisateur, comme
+les **index** (les noms) c'est quand on utilise des valeurs fournies par l'utilisateur, comme
 
 * les **noms** de colonnes
 * ou les **identifiants** de lignes  
@@ -759,7 +775,7 @@ lorsqu'une table n'a **pas d'index** particulier - i.e. avant qu'on fasse un `se
 
 * dans ce cas l'**index commence à 0**, 
 * et du coup, par accident, les **indices** et les **index coincident**
-* pour information, pandas crée automatiquement un index de type `RangeIndex`  
+* pour information, `pandas` crée automatiquement dans ce cas un index de type `RangeIndex`  
 ````
 
 +++ {"tags": ["framed_cell"]}
@@ -767,7 +783,7 @@ lorsqu'une table n'a **pas d'index** particulier - i.e. avant qu'on fasse un `se
 ### l'index des lignes
 
 ````{admonition} →
-il est accessible par l'attribut `pandas.DataFrame.index`
+il est accessible par l'attribut `df.index`
 
 lisons la data-frame du titanic sans fixer l'index de lignes
 
@@ -805,6 +821,7 @@ df.index
 df = pd.read_csv('data/titanic.csv').set_index('PassengerId')
 df.index
 ```
+````
 
 +++ {"tags": ["framed_cell"]}
 
@@ -833,7 +850,7 @@ df.index
 `pandas` est encore fondé sur `numpy` mais il le remplace de plus en plus par `pyarrow`  
 (par exemple pour les tableaux de chaînes de caratères)
 
-la **forme** de la table est donnée par l'attribut `pandas.DataFrame.shape`
+la **forme** de la table est donnée par l'attribut `df.shape`
 
 ```python
 df.shape
@@ -850,7 +867,7 @@ df.shape
 :class: admonition-small tip
 
 une `pandas.dataFrame` est donc toujours une table à deux dimensions  
-on peut le vérifier par l'attribut `pandas.DataFrame.ndim`
+on peut le vérifier par l'attribut `df.ndim`
 
 ```python
 df.ndim
@@ -887,7 +904,7 @@ Le fichier `data/petit-titanic.csv` contient les 10 premières lignes de passage
 ```
 
 1. lisez le contenu de ce fichier avec les paramètres par défaut de `pandas.read_csv`  
-affichez les 2 premières lignes avec `pandas.DataFrame.head`  
+affichez les 2 premières lignes avec `df.head()`  
 voyez-vous les trois problèmes ?  
 essayez de les résoudre en lisant le help de la fonction `help(pd.read_csv)` ou `pd.read_csv?`  
 ou passez à la question 2 pour être aidé
@@ -962,7 +979,7 @@ df[['Age', 'Fare']].describe()
 # prune-cell 4.
 
 # plusieurs solutions
-df.shape, len(df.columns), len(df.index), 
+df.shape, len(df.columns), len(df.index),
 ```
 
 5. affichez les index des colonnes et des lignes
