@@ -437,7 +437,7 @@ différence avec `numpy`, si on appelle sans préciser `axis`
 1. soit on peut passer par le sous-tableau `numpy`  
   et là la fonction `numpy.sum()` donnera le résultat global
 
-la méthode `pandas.DataFrame.to_numpy` retourne le tableau `numpy.ndarray` de la DataFrame `pandas`
+la méthode `df.to_numpy` retourne le tableau `numpy.ndarray` de la DataFrame `pandas`
 
 ```python
 df.isna().to_numpy()

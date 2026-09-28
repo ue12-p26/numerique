@@ -102,11 +102,11 @@ IPython.display.display(   df.describe()   )
 ## visualisation de la dataframe - `df.plot()`
 
 ````{admonition} →
-la méthode `plot`  des objets de type `pandas.DataFrame` i.e. `pandas.DataFrame.plot`  
+la méthode `plot`  des objets de type `pandas.DataFrame` i.e. `df.plot`  
 permet une première visualisation simple, rapide et informative **des colonnes numériques**  
 qui apporte beaucoup d'informations sur ces données
 
-la fonction `pandas.DataFrame.plot` possède les mêmes paramètres que la fonction `matplotlib.pyplot.plot`  
+`df.plot()` accepte les mêmes paramètres que la fonction `matplotlib.pyplot.plot`  
 elle permet les mêmes réglages  
 (en fait elles utilisent toutes les deux la même fonction)
 
@@ -418,7 +418,7 @@ df['Name-code'] = df['Name'].astype('category').cat.codes
 
 pour mettre en valeur des informations sur nos données  
 on peut dessiner en 2D les colonnes les unes par rapport aux autres  
-avec `pandas.DataFrame.plot.scatter`
+avec `df.plot.scatter`
 
 dessinons les `'SepalLength'` en fonction des `'SepalWidth'`
 

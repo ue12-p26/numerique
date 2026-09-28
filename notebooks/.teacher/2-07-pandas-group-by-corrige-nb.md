@@ -50,7 +50,7 @@ des analyses mettant en exergue ces groupes de personnes peuvent être intéress
 lors du naufrage du Titanic, valait-il mieux être une femme en première classe ou un enfant en troisième ?
 
 on va calculer des regroupements de lignes (des partitions de la dataframe)  
-en utilisant la méthode `pandas.DataFrame.groupby()`  
+en utilisant la méthode `df.groupby()`  
 à laquelle on indique un ou plusieurs critères.
 ````
 
@@ -63,7 +63,7 @@ en utilisant la méthode `pandas.DataFrame.groupby()`
 ## groupement par critère unique
 
 ````{admonition} →
-le groupement (la partition) se fait par la méthode `pandas.DataFrame.groupby()`
+le groupement (la partition) se fait par la méthode `df.groupby()`
 
 prenons le seul critère de genre des passagers  
 de la colonne `Sex`
@@ -222,9 +222,9 @@ by_sex.get_group('female').head(4)
 
 ````{admonition} →
 pour des partitions multi-critères  
-passez à `pandas.DataFrame.groupby()` une **liste des colonnes**
+passez à `df.groupby()` une **liste des colonnes**
 
-la méthode `pandas.DataFrame.groupby()`
+la méthode `df.groupby()`
 
 * calcule les valeurs distinctes de chaque colonne (comme dans le cas du critère unique)
 * mais ensuite il en fait le **produit cartésien**

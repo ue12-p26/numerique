@@ -1031,7 +1031,7 @@ et dépend toujours du contexte
 
 **à retenir**
 
-* en utilisant les méthodes **`pandas.DataFrame.loc[line, column]`** et `pandas.DataFrame.iloc[line, column]`  
+* en utilisant les méthodes **`df.loc[line, column]`** et `df.iloc[line, column]`  
 on ne **crée pas de copie** mais des **références partagées**  
 c'est ***la bonne façon de faire***
 

@@ -189,7 +189,7 @@ utilisez l'attribut `dtypes` des `pandas.DataFrame`
 # votre code
 ```
 
-8. avec la méthode `pandas.DataFrame.to_numpy`  
+8. avec la méthode `df.to_numpy`  
 affichez le tableau `numpy` sous-jacent de votre data-frame  
 affichez le type du tableau  
 que constatez-vous ?
