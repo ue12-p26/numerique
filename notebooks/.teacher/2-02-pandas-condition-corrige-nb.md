@@ -96,12 +96,13 @@ girls.sum()
 -> 32
 ```
 
-```{attention}
+:::{admonition} attention de bien mettre les parenthèses `()`
+:class: attention
 
 c'est **très important** de bien mettre des parenthéses  
 car les opérateurs bitwise (`&` et autres) ont des **précédences** (priorités)  
 qui sont non intuitives, et très différentes des opérateurs logiques (`and` et autres)
-```
+:::
 
 on pourra ensuite utiliser ces tableaux de booléens  
 
@@ -139,20 +140,27 @@ c'est-à-dire en français: écrire `df[mask]`
 
 ```python
 # pour construire la dataframe réduite aux filles
+
 girls_df = df[girls]
 girls_df.head(2)
 ->
-             Survived  Pclass                              Name     Sex  Age  SibSp  Parch Ticket      Fare    Cabin  Embarked  
-PassengerId                                                                    
-238                 1       2  Collyer, Miss. Marjorie "Lottie"  female  8.0  0      2     C.A. 31921  26.250  NaN    S 
-375                 0       3        Palsson, Miss. Stina Viola  female  3.0  3      1     349909      21.075  NaN    S   
+             Survived  Pclass                              Name     Sex  Age  SibSp  Parch Ticket      Fare    Cabin  Embarked
+PassengerId
+238                 1       2  Collyer, Miss. Marjorie "Lottie"  female  8.0  0      2     C.A. 31921  26.250  NaN    S
+375                 0       3        Palsson, Miss. Stina Viola  female  3.0  3      1     349909      21.075  NaN    S
 ```
 
-```{admonition} ou encore avec .loc
-:class: admonition-small
+:::{admonition} le résultat est un CoW
+:class: admonition-small attention
+comme pour `df[colname]`, `df[mask]` renvoie une copie paresseuse  
+ça signifie qu'on ne peut pas modifier la dataframe originale au travers de `df[mask]`
+:::
 
-en fait on fera même plutôt `df.loc[mask]`, mais bon, on n'a pas encore parlé de `.loc` ...
-```
+:::{admonition} ou encore avec `df.loc[mask]`
+:class: admonition-small tip
+
+c'est pourquoi en pratique on fera plutôt `df.loc[mask]`, mais bon n'anticipons pas, on n'a pas encore parlé de `.loc` ...
+:::
 ````
 
 ```{code-cell} ipython3
@@ -289,6 +297,7 @@ df['Age'].isna().sum()
 ```{code-cell} ipython3
 # remarquez qu'on peut tout aussi bien
 # utiliser le sum() de np ou de Python
+
 import numpy as np
 np.sum(df['Age'].isna()), sum(df['Age'].isna())
 ```
@@ -366,7 +375,7 @@ dtype: int64
 
 nous remarquons des valeurs manquantes dans les colonnes `Cabin`, `Age` et `Embarked`
 
-```{admonition} note
+```{admonition} pas tout à fait comme numpy (1/2) !
 :class: attention
 
 pour souligner une différence avec `numpy`: comparez le comportement
@@ -382,7 +391,8 @@ pour souligner une différence avec `numpy`: comparez le comportement
 ### dans l'autre direction (axis=1)
 
 ````{admonition} →
-exemple de la somme des valeurs manquantes sur l'axe des colonnes
+exemple de la somme des valeurs manquantes ligne par ligne  
+(donc, on somme sur l'axe des colonnes; oui je sais...)
 
 ```python
 df.isna().sum(axis=1):
@@ -458,7 +468,7 @@ df.isna().to_numpy().sum()
 
 il y a `866` valeurs manquantes dans toute la data-frame
 
-```{admonition} note
+```{admonition} pas tout à fait comme numpy (2/2) !
 :class: attention
 
 remarque: contrairement à ce qu'on avait vu en `numpy`, ici on ne pourrait pas faire `df.isna().sum(axis=(0, 1))`  
