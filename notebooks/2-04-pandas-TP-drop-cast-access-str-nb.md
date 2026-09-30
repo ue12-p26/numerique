@@ -44,6 +44,8 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
 1. importez les librairies `pandas` et `numpy`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -53,6 +55,8 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
 2.  affichez sa taille et regardez quelques premières lignes
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -62,7 +66,20 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
    utiliser la méthode `drop` des dataframes pour supprimer cette colonne de votre dataframe
 
 ```{code-cell} ipython3
+# before
+
+df.shape
+```
+
+```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
+```
+
+```{code-cell} ipython3
+# after 
+df.shape
 ```
 
 ## 4. info
@@ -71,17 +88,35 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
 2. remarquez une colonne entièrement vide
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
-## 5. dropna
+## 5. dropna (1)
 
 1. utilisez la méthode `dropna` des dataframes pour supprimer *en place* les colonnes qui ont toutes leurs valeurs manquantes  
    (ici on s'interdit un code qui ferait explicitement référence à la colonne `'Size'`)
 2. vérifiez que vous avez bien enlevé la colonne `'Size'`
 
 ```{code-cell} ipython3
+# before
+df.shape
+```
+
+```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
+```
+
+```{code-cell} ipython3
+# after
+df.shape
+```
+
+```{code-cell} ipython3
+'Size' in df.columns
 ```
 
 ## 6. dropna (2)
@@ -92,7 +127,19 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
    (et de nouveau sans faire référence à une ligne en particulier)
 
 ```{code-cell} ipython3
+# before
+df.shape
+```
+
+```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
+```
+
+```{code-cell} ipython3
+# after
+df.shape
 ```
 
 ## 7. dtypes
@@ -101,6 +148,8 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
 2. que remarquez vous sur la colonne des masses ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -110,6 +159,8 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
 2. que remarquez vous ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -123,6 +174,8 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
 1. combien y a-t-il de données manquantes dans cette colonne ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -132,11 +185,11 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
    (même au prix de valeurs approchées)  
 2. vous décidez vaillamment de modifier les `str` en leur enlevant les caractères `<` et `>`  
    afin de pouvoir en faire des entiers  
-   remplacez les `<` et les `>` par des '' (chaîne vide)
+   remplacez les `<` et les `>` par des `""` (chaîne vide)
    ````{admonition} *hint*
    :class: dropdown tip
 
-   les `pandas.Series` formées de chaînes de caractères sont du type `pandas` `object`  
+   les `pandas.Series` formées de chaînes de caractères sont du type `pandas` `str`  
    mais elle possèdent un accesseur `str` qui permet de leur appliquer les méthodes python des `str`  
    (comme par exemple `replace`)
     ```python
@@ -152,6 +205,8 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
     ````
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -162,6 +217,8 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
    arrondissez les flottants en entiers en utilisant `astype`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -176,6 +233,8 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
    ```
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -185,6 +244,8 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
 2. quel est le poids total des objets laissés par les `United States`  ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -198,6 +259,8 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
    ````
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -212,6 +275,8 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
 2. quel est le pays qui a mis ce mémorial ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 

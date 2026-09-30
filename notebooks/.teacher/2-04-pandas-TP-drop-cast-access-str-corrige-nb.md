@@ -46,6 +46,8 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
 1. importez les librairies `pandas` et `numpy`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -62,6 +64,8 @@ import numpy as np
 2.  affichez sa taille et regardez quelques premières lignes
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -84,12 +88,24 @@ df.head(2)
    utiliser la méthode `drop` des dataframes pour supprimer cette colonne de votre dataframe
 
 ```{code-cell} ipython3
+# before
+
+df.shape
+```
+
+```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-# prune-cell
+# prune-begin
 
+# this is about the 'Unnamed: 0' thingy
+```
+
+```{code-cell} ipython3
 # it's not as if there was an obvious criteria
 # that a column should fulfill before we drop it
 
@@ -101,23 +117,34 @@ df.head(2)
 ```
 
 ```{code-cell} ipython3
-# prune-cell
+# the column name
 
+df.columns[0]
+```
+
+```{code-cell} ipython3
 # the simplest
-df.drop(['Unnamed: 0'], axis=1, inplace=True)
+df.drop(columns=df.columns[0], inplace = True)
 
 # or also
-#df.drop(columns=['Unnamed: 0'], inplace = True)
+# df.drop(columns=['Unnamed: 0'], inplace = True)
 
 # or yet
-# df.drop(columns=df.columns[0], inplace = True)
-
+# df.drop(['Unnamed: 0'], axis=1, inplace=True)
 
 df.head(2)
 ```
 
 ```{code-cell} ipython3
-# prune-cell
+df.shape
+```
+
+```{code-cell} ipython3
+# prune-end
+```
+
+```{code-cell} ipython3
+# after 
 df.shape
 ```
 
@@ -127,6 +154,8 @@ df.shape
 2. remarquez une colonne entièrement vide
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -136,20 +165,50 @@ df.shape
 df.info()
 ```
 
-## 5. dropna
+## 5. dropna (1)
 
 1. utilisez la méthode `dropna` des dataframes pour supprimer *en place* les colonnes qui ont toutes leurs valeurs manquantes  
    (ici on s'interdit un code qui ferait explicitement référence à la colonne `'Size'`)
 2. vérifiez que vous avez bien enlevé la colonne `'Size'`
 
 ```{code-cell} ipython3
+# before
+df.shape
+```
+
+```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-# prune-cell
+# prune-begin
+```
 
+```{code-cell} ipython3
+# elle est bien vide
+df.Size.notna().sum()
+```
+
+```{code-cell} ipython3
 df.dropna(how='all', axis=1, inplace=True)
+
+# or also this form - which violates the assignment,
+# but as we haven't seen this in the course yet:
+# del df['Size']
+```
+
+```{code-cell} ipython3
+# prune-end
+```
+
+```{code-cell} ipython3
+# after
+df.shape
+```
+
+```{code-cell} ipython3
 'Size' in df.columns
 ```
 
@@ -161,6 +220,13 @@ df.dropna(how='all', axis=1, inplace=True)
    (et de nouveau sans faire référence à une ligne en particulier)
 
 ```{code-cell} ipython3
+# before
+df.shape
+```
+
+```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -174,7 +240,21 @@ df.loc[88]
 
 ```{code-cell} ipython3
 # prune-cell
+
+# note that we have not set an index yet, 
+# so index == indice in this case
+
+df.iloc[88]
+```
+
+```{code-cell} ipython3
+# prune-cell
 df.dropna(how='all', axis=0, inplace=True)
+df.shape
+```
+
+```{code-cell} ipython3
+# after
 df.shape
 ```
 
@@ -184,6 +264,8 @@ df.shape
 2. que remarquez vous sur la colonne des masses ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -191,7 +273,7 @@ df.shape
 # prune-cell
 
 # la colonne des masses devrait être de type numérique
-# mais elle est de type 'object'
+# mais elle est de type 'str'
 
 df.dtypes
 ```
@@ -202,6 +284,8 @@ df.dtypes
 2. que remarquez vous ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -224,31 +308,33 @@ df['Mass (lb)'].unique()
 1. combien y a-t-il de données manquantes dans cette colonne ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-# prune-cell
+# prune-begin
+```
 
+```{code-cell} ipython3
 df['Mass (lb) orig'] = df['Mass (lb)']
 ```
 
 ```{code-cell} ipython3
-# prune-cell
-
 df['Mass (lb)'] = pd.to_numeric(df['Mass (lb)'], errors='coerce')
 ```
 
 ```{code-cell} ipython3
-# prune-cell
-
 df['Mass (lb)'].dtype
 ```
 
 ```{code-cell} ipython3
-# prune-cell
-
 df['Mass (lb)'].isna().sum()
+```
+
+```{code-cell} ipython3
+# prune-end
 ```
 
 ## 10. replace
@@ -257,11 +343,11 @@ df['Mass (lb)'].isna().sum()
    (même au prix de valeurs approchées)  
 2. vous décidez vaillamment de modifier les `str` en leur enlevant les caractères `<` et `>`  
    afin de pouvoir en faire des entiers  
-   remplacez les `<` et les `>` par des '' (chaîne vide)
+   remplacez les `<` et les `>` par des `""` (chaîne vide)
    ````{admonition} *hint*
    :class: dropdown tip
 
-   les `pandas.Series` formées de chaînes de caractères sont du type `pandas` `object`  
+   les `pandas.Series` formées de chaînes de caractères sont du type `pandas` `str`  
    mais elle possèdent un accesseur `str` qui permet de leur appliquer les méthodes python des `str`  
    (comme par exemple `replace`)
     ```python
@@ -277,13 +363,20 @@ df['Mass (lb)'].isna().sum()
     ````
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
 # prune-cell 1. 2. 3.
 
-df['Mass (lb) clean'] = df['Mass (lb) orig'].str.replace('<', '').str.replace('>', '').astype(int)
+df['Mass (lb) rough'] = (
+    df['Mass (lb) orig']
+        .str.replace('<', '')
+        .str.replace('>', '')
+        .astype(int)
+)
 ```
 
 ```{code-cell} ipython3
@@ -297,7 +390,7 @@ df['Mass (lb) clean'] = df['Mass (lb) orig'].str.replace('<', '').str.replace('>
 # MAIS on peut le faire avec ce type:
 
 # le type magique se construit comme ceci
-int_with_nan = dtype=pd.Int64Dtype()
+int_with_nan = pd.Int64Dtype()
 
 # converting nan to plain 'int' is not possible
 try:
@@ -312,7 +405,12 @@ df['Mass (lb) ints'] = df['Mass (lb)'].astype(int_with_nan)
 ```{code-cell} ipython3
 # prune-cell
 
-# summarize
+# summarize:
+# - Mass (lb) orig:  raw data, type 'str'
+# - Mass (lb):       float, with nan when data contains < or >
+# - Mass (lb) rough: < and > have been removed, all values defined as 'int64'
+# - Mass (lb) ints:  Int64, with nan when data contains < or >
+
 
 mass_columns = [col for col in df.columns if 'Mass' in col]
 df_mass = df[mass_columns]
@@ -326,13 +424,19 @@ df_mass.dtypes, df_mass.isna().sum()
    arrondissez les flottants en entiers en utilisant `astype`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
 # prune-cell
 
-df['Mass (kg)'] = (df['Mass (lb) clean'] / 2.205).astype(int)
+df['Mass (kg)'] = (df['Mass (lb) rough'] / 2.205).astype(int)
+
+# Note: we can't use astype(int) if using a column that has nan's
+# but we can if we use the magic extended type
+# df['Mass (kg)'] = (df['Mass (lb) ints'] / 2.205).astype(int_with_nan)
 ```
 
 ## 12. countries
@@ -346,6 +450,8 @@ df['Mass (kg)'] = (df['Mass (lb) clean'] / 2.205).astype(int)
    ```
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -367,29 +473,33 @@ df['Country'].value_counts(normalize=True)
 2. quel est le poids total des objets laissés par les `United States`  ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-# prune-cell
+# prune-begin
+```
 
+```{code-cell} ipython3
 df['Mass (kg)'].sum()
 ```
 
 ```{code-cell} ipython3
-# prune-cell
-
 df.loc[df['Country'] == 'United States', 'Mass (kg)'].sum()
 ```
 
 ```{code-cell} ipython3
-# prune-cell
-
 # plus tard on verra les groupby
 # et pour obtenir cette info 
 # pour tous les pays d'un coup on fera 
 
 df.groupby(by=['Country'])['Mass (kg)'].sum()
+```
+
+```{code-cell} ipython3
+# prune-end
 ```
 
 ## 14. blame
@@ -402,43 +512,48 @@ df.groupby(by=['Country'])['Mass (kg)'].sum()
    ````
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-# prune-cell
+# prune-begin
+```
 
+```{code-cell} ipython3
 # using .loc: we need the index, so idxmin()
 
 df.loc[df['Mass (kg)'].idxmin(), 'Country']
 ```
 
 ```{code-cell} ipython3
-# prune-cell
-
 # we can also use argmin() that returns a position (integer rank)
-# but then, if we want to use the column name there are 2 options
+# but then, if we want to use the column name there are several options
 
-df.iloc[df['Mass (kg)'].argmin()].loc['Country']
+indice_min = df['Mass (kg)'].argmin()
+
+# 1. use .loc, and so convert the indice into an index
+df.loc[df.index[indice_min], 'Country']
 ```
 
 ```{code-cell} ipython3
-# prune-cell
+# or 2. we use iloc, in which case we convert 'Name' into an indice
 
-# or,
-
-df.iloc[df['Mass (kg)'].argmin(), df.columns.get_loc('Country')]
+df.iloc[indice_min, df.columns.get_loc('Country')]
 ```
 
 ```{code-cell} ipython3
-# prune-cell
-
-# note that this approach seems to work in this context
+# note that the code below SEEMS to work in this context
 # because we're lucky enough to have a RangeIndex
 # but that is "coding by accident", and it's *wrong* 
 
 # WORKS, BUT WRONG nonetheless
 df.loc[df['Mass (kg)'].argmin(), 'Country']
+```
+
+```{code-cell} ipython3
+# prune-end
 ```
 
 ## 15. memorial
@@ -452,6 +567,8 @@ df.loc[df['Mass (kg)'].argmin(), 'Country']
 2. quel est le pays qui a mis ce mémorial ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -481,8 +598,7 @@ df.loc[df['Artificial object'].str.contains('Memorial'), 'Country']
 
 ```{code-cell} ipython3
 # prune-cell
-ao = df['Artificial object'].tolist()
-ao
+df['Artificial object'].tolist()
 ```
 
 ***
