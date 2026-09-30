@@ -43,7 +43,7 @@ project:
         - file: 2-01-pandas-read-csv-nb.md
         - file: 2-02-pandas-condition-nb.md
         - file: 2-03-pandas-indexing-slicing-nb.md
-        - file: 2-04-pandas-TP-drop-cast-access-str-nb.md
+        - file: 2-04-TP-on-the-moon-nb.md
         - file: 2-05-pandas-TP-sorting-nb.md
         - file: 2-06-pandas-matplotlib-nb.md
         - file: 2-07-pandas-group-by-nb.md
