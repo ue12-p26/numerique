@@ -39,7 +39,7 @@ df.head(5)
 ```
 
 ```{code-cell} ipython3
-# at aussi, tout à fait optionnel
+# et aussi, tout à fait optionnel
 # mais seaborn vient avec des styles
 
 sns.set_style('darkgrid')
@@ -47,7 +47,7 @@ sns.set_style('darkgrid')
 
 ## les grandes familles de plot
 
-nous allons voir quelques-uns des plot exposés par seabord
+nous allons voir quelques-uns des plot exposés par `seaborn`
 
 - `relplot` pour afficher des **relations** statistiques
 - `distplot` pour afficher la **distribution** d'une ou deux variables
