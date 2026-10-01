@@ -30,6 +30,18 @@ project:
   # bibliography: []
   plugins:
     - https://raw.githubusercontent.com/choldgraf/myst-lightbox/main/src/index.mjs
+  error_rules:
+    - rule: directive-options-correct
+      keys:
+        - 'code-cell.cell_style'
+        - 'code-cell.jupyter'
+        - 'code-cell.lines_to_next_cell'
+        - 'code-cell.scrolled'
+    - rule: valid-page-frontmatter
+      keys:
+        - 'jupytext.*'
+        - 'language_info'
+
 
 site:
   #template: book-theme
