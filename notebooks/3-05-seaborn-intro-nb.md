@@ -7,10 +7,6 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
-language_info:
-  name: python
-  nbconvert_exporter: python
-  pygments_lexer: ipython3
 ---
 
 # courte introduction à seaborn
@@ -164,11 +160,9 @@ fmri.head(10)
 sns.relplot(data=fmri, x="timepoint", y="signal", kind="line");
 ```
 
-```{raw-cell}
 pour en savoir plus: <https://seaborn.pydata.org/tutorial/relational.html>
-```
 
-+++ {"jp-MarkdownHeadingCollapsed": true}
++++
 
 ## `displot()`
 
@@ -200,11 +194,9 @@ sns.displot(
     kind='ecdf');
 ```
 
-```{raw-cell}
 pour en savoir plus: <https://seaborn.pydata.org/tutorial/distributions.html>
-```
 
-+++ {"jp-MarkdownHeadingCollapsed": true}
++++
 
 ## `catplot()`
 
@@ -230,9 +222,9 @@ sns.catplot(
     kind='swarm');
 ```
 
-```{raw-cell}
 pour en savoir plus: <https://seaborn.pydata.org/tutorial/categorical.html>
-```
+
++++
 
 ## `jointplot()`
 
