@@ -5,17 +5,23 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.19.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
-language_info:
-  name: python
-  pygments_lexer: ipython3
-  nbconvert_exporter: python
 ---
 
-# TP on the moon (version polars)
+# TP on the moon (with polars)
+
+```{admonition} ***TRÈS OPTIONNEL***
+:class: danger
+
+Pour ceux qui connaissent déjà pandas et qui voudraient se frotter à `polars`: voici le TP 'on the moon' adapté pour cette librairie.
+
+Par contre nous ne fournissons pas de support sur `polars`;  part les quelques généralités c-dessous, vous êtes en complète autonomie pour le faire.
+```
 
 +++
 
@@ -43,11 +49,28 @@ language_info:
 
 +++
 
+## 0. install
+
+1. installez `polars` si vous ne l'avez pas encore fait
+
+```{admonition} hint
+:class: dropdown tip
+depuis le notebook vous pouvez lancer `pip` avec la *magic* `%pip`
+```
+
+```{code-cell} ipython3
+:tags: [level_basic]
+
+# votre code
+```
+
 ## 1. import
 
 1. importez la librairie `polars` (sous le nom `pl`, c'est l'usage)
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -62,7 +85,14 @@ import polars as pl
 1. lisez le fichier de données `data/objects-on-the-moon.csv`
 2. affichez sa taille et regardez quelques premières lignes
 
+:::{admonition} itables
+:class: dropdown tip
+on peut [utiliser `itables` aussi avec une table polars](#label-itables)
+:::
+
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -71,6 +101,11 @@ import polars as pl
 
 df = pl.read_csv('data/objects-on-the-moon.csv')
 print(df.shape)
+```
+
+```{code-cell} ipython3
+import itables
+itables.init_notebook_mode()
 ```
 
 ```{code-cell} ipython3
@@ -92,6 +127,8 @@ df.head(2)
 3. utilisez la méthode `drop` des dataframes pour supprimer cette colonne de votre dataframe
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 

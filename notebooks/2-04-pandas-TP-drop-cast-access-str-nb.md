@@ -9,10 +9,6 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
-language_info:
-  name: python
-  pygments_lexer: ipython3
-  nbconvert_exporter: python
 ---
 
 # TP on the moon
@@ -228,6 +224,8 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
    ````
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 

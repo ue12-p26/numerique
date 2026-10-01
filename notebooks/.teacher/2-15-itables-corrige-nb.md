@@ -75,6 +75,8 @@ df = pd.read_csv('data/titanic.csv')
 
 et maintenant chaque fois que j'affiche une dataframe j'obtiens ce genre de représentation
 
+(label-itables)=
+
 ```{image} media/itables.png
 ```
 

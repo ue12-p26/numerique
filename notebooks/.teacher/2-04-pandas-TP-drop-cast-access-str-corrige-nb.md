@@ -5,14 +5,12 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.19.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
-language_info:
-  name: python
-  pygments_lexer: ipython3
-  nbconvert_exporter: python
 ---
 
 # TP on the moon
@@ -90,8 +88,6 @@ df.head(2)
 ```
 
 ```{code-cell} ipython3
-:scrolled: true
-
 # prune-cell
 
 # it's not as if there was an obvious criteria
@@ -105,8 +101,6 @@ df.head(2)
 ```
 
 ```{code-cell} ipython3
-:scrolled: true
-
 # prune-cell
 
 # the simplest
@@ -356,16 +350,12 @@ df['Mass (kg)'] = (df['Mass (lb) clean'] / 2.205).astype(int)
 ```
 
 ```{code-cell} ipython3
-:scrolled: true
-
 # prune-cell
 
 df['Country'].unique()
 ```
 
 ```{code-cell} ipython3
-:scrolled: true
-
 # prune-cell
 
 df['Country'].value_counts(normalize=True)
@@ -387,8 +377,6 @@ df['Mass (kg)'].sum()
 ```
 
 ```{code-cell} ipython3
-:scrolled: true
-
 # prune-cell
 
 df.loc[df['Country'] == 'United States', 'Mass (kg)'].sum()
@@ -486,12 +474,12 @@ df.loc[df['Artificial object'].str.contains('Memorial'), 'Country']
    ````
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-:scrolled: true
-
 # prune-cell
 ao = df['Artificial object'].tolist()
 ao
