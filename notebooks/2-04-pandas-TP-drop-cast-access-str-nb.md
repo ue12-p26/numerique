@@ -225,7 +225,7 @@ il y a aussi la méthode *old-school* qui consiste à appeler `help(une_fonction
    ````{admonition} *hint*
    :class: dropdown tip
    voyez la méthode `tolist()` des séries
-   ```
+   ````
 
 ```{code-cell} ipython3
 # votre code

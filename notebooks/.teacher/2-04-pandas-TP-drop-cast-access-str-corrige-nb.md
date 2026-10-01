@@ -483,7 +483,7 @@ df.loc[df['Artificial object'].str.contains('Memorial'), 'Country']
    ````{admonition} *hint*
    :class: dropdown tip
    voyez la méthode `tolist()` des séries
-   ```
+   ````
 
 ```{code-cell} ipython3
 # votre code
