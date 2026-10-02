@@ -65,6 +65,8 @@ project:
           url: https://numerique-exos.info-mines.paris/geo-tps/addresses/readme-addresses-nb/
         - file: 2-15-itables-nb.md
         - file: 2-16-TP-on-the-moon-polars-nb.md
+        - title: "TP merge & group"
+          url: https://numerique-exos.info-mines.paris/pandas-tps/merge-group/readme-merge-group-nb/
         - pattern: .teacher/2*-corrige-nb.md
           hidden: true
 
