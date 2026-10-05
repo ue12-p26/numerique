@@ -28,7 +28,7 @@ parfois on obtient les données par **plusieurs canaux**, qu'il faut accumuler d
 
 les outils à utiliser pour cela sont multiples  
 pour bien choisir, il est utile de se poser en priorité la question de savoir 
-si les différentes sources à assembler concernent les **mêmes colonnes** ou au contraire les **mêmes lignes**  (*)
+si les différentes sources à assembler concernent les **mêmes colonnes** ou au contraire les **mêmes lignes**
 
 
 illustrations / use cases (juste pour fixer les idées)
@@ -52,6 +52,8 @@ pour l'accumulation de données (en hauteur donc), préférez la fonction `panda
 
 * la fonction `pd.concat([df1, df2, ..])`  
   qui a vocation à accumuler des données en hauteur  
+
+c'est pourquoi d'ailleurs par défaut, `axis=0`
 ````
 
 ```{code-cell} ipython3
@@ -69,34 +71,34 @@ df2 = pd.DataFrame(
         'group': ['HR', 'Accounting', 'Engineering',]})
 ```
 
-```{code-cell} ipython3
-:cell_style: split
-:tags: [gridwidth-1-2]
+::::{grid} 2
 
+```{code-cell} ipython3
 df1
 ```
 
 ```{code-cell} ipython3
-:cell_style: split
-:tags: [gridwidth-1-2]
-
 df2
 ```
 
 ```{code-cell} ipython3
-:tags: [gridwidth-1-2]
-
-# nous ne gardons pas les index de chaque sous-dataframe
-pd.concat([df1, df2], ignore_index=True)
-# pd.concat([df1, df2], axis=0) # by default concat rows
+# nous ne gardons pas les index 
+# de chaque sous-dataframe
+pd.concat(
+    [df1, df2], ignore_index=True
+)
 ```
 
 ```{code-cell} ipython3
-:tags: [gridwidth-1-2]
-
-# nous indexons les dataframes par la colonne 'name'
-pd.concat([df1.set_index('name'), df2.set_index('name')])
+# si les dataframes sont indexées
+# par la colonne 'name'
+pd.concat(
+    [df1.set_index('name'), 
+     df2.set_index('name')]
+)
 ```
+
+::::
 
 +++ {"tags": ["framed_cell"]}
 
@@ -114,16 +116,26 @@ grâce à ces outils, il est possible d'aligner des dataframes sur les valeurs d
 
 ````
 
-+++
++++ {"tags": ["framed_cell"]}
 
 ## alignements
 
+````{admonition} →
 dans les deux cas, `pandas` va ***aligner*** les données  
 par exemple on peut concaténer deux tables qui ont les mêmes colonnes, même si elles sont dans le désordre
 
 l'usage typique de `merge()`/`join()` est l'équivalent d'un JOIN en SQL (pour ceux à qui ça dit quelque chose)  
 
 **sans indication**, `merge()` calcule les **colonnes communes** et se sert de ça pour aligner les lignes
+````
+
++++
+
+## exemples de `merge()`
+
++++
+
+### `merge()` implicite
 
 ```{code-cell} ipython3
 # exemple 1
@@ -142,35 +154,35 @@ df2 = pd.DataFrame(
 })
 ```
 
-```{code-cell} ipython3
-:cell_style: split
-:tags: [gridwidth-1-2]
+::::{grid} 2
 
+```{code-cell} ipython3
 df1
 ```
 
 ```{code-cell} ipython3
-:cell_style: split
-:tags: [gridwidth-1-2]
-
 df2
 ```
 
 ```{code-cell} ipython3
-:tags: [gridwidth-1-2]
-
-# sans rien préciser, on JOIN sur la colonne commune 'name'
+# sans rien préciser, on JOIN 
+# sur la colonne commune 'name'
 
 df1.merge(df2)
 ```
 
 ```{code-cell} ipython3
-:tags: [gridwidth-1-2]
-
 # on peut aussi l'écrire comme ceci
+
 
 pd.merge(df1, df2)
 ```
+
+::::
+
++++
+
+### `merge()` explicite
 
 ```{code-cell} ipython3
 # exemple 2
@@ -186,39 +198,40 @@ df2 = pd.DataFrame(
             'hire_date': [2004, 2008, 2014]})
 ```
 
-```{code-cell} ipython3
-:cell_style: split
-:tags: [gridwidth-1-2]
+::::{grid} 2
 
+```{code-cell} ipython3
 df1
 ```
 
 ```{code-cell} ipython3
-:cell_style: split
-:tags: [gridwidth-1-2]
-
 df2
 ```
 
 ```{code-cell} ipython3
-:tags: [gridwidth-1-2]
-
-# du coup ici sans préciser de paramètres, ça ne fonctionnerait pas
+# du coup ici sans préciser de paramètres,
+# ça ne fonctionnerait pas
 # il faut être explicite
 
-df1.merge(df2, left_index=True, right_on='name')
+df1.merge(df2, 
+    left_index=True, right_on='name')
 ```
 
 ```{code-cell} ipython3
-:tags: [gridwidth-1-2]
-
 # ou encore
 
-pd.merge(df1, df2, left_index=True, right_on='name')
+
+pd.merge(df1, df2, 
+    left_index=True, right_on='name')
 ```
+
+::::
+
++++
 
 ## optionnel: stratégies pour `merge()
 
+````{admonition} → inner, outer, etc...
 comme en SQL, on a à notre disposition plusieurs stratégies pour le `merge` (ou `join`, donc)
 le paramètre `how` peut prendre les valeurs suivantes:
 
@@ -228,12 +241,13 @@ le paramètre `how` peut prendre les valeurs suivantes:
 * `outer`: on garde l'union des clés
 
 (il y a aussi `cross`, mais c'est plus particulier comme usage..)
+````
 
 +++
 
 ## concat() *vs* merge()
 
-````{admonition} concat() *vs* merge()
+````{admonition} → concat() *vs* merge()
 les deux fonctionnalités sont assez similaires sauf que
 
 * `merge` est une opération **binaire**, alors que `concat` est **n-aire**  
