@@ -42,8 +42,6 @@ lines_as_dicts = [
 pd.DataFrame(lines_as_dicts)
 ```
 
-+++ {"tags": []}
-
 ## à partir d'un dict de list (les colonnes)
 
 ```{code-cell} ipython3
@@ -126,6 +124,8 @@ pd.DataFrame(
 1. créer un `numpy.ndarray` à partir de la liste suivante
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 animals = [['snail', 0.1, 2.0],
            ['pig', 17.5, 8.0],
            ['elephant', 40.0, 70.0],
@@ -143,6 +143,8 @@ animals = [['snail', 0.1, 2.0],
    Remettez-y le mot `"elephant"`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -156,6 +158,8 @@ animals = [['snail', 0.1, 2.0],
    ````
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -164,6 +168,8 @@ Que constatez-vous ?
 (`object` signifie ici `str`)
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -171,6 +177,8 @@ Que constatez-vous ?
 Que constatez-vous ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -179,6 +187,8 @@ affichez la valeur et le type du `'names'` de l'éléphant
 un constat ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -186,6 +196,8 @@ un constat ?
 utilisez l'attribut `dtypes` des `pandas.DataFrame`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -195,6 +207,8 @@ affichez le type du tableau
 que constatez-vous ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -202,6 +216,8 @@ que constatez-vous ?
 (utilisez `pandas.Series.astype` voir les **rappels** en fin d'exercice)
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -209,6 +225,8 @@ que constatez-vous ?
     a-t-on besoin dans ce cas de convertir les types des colonnes ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # your code
 ```
 

@@ -42,8 +42,6 @@ lines_as_dicts = [
 pd.DataFrame(lines_as_dicts)
 ```
 
-+++ {"tags": []}
-
 ## à partir d'un dict de list (les colonnes)
 
 ```{code-cell} ipython3
@@ -126,6 +124,8 @@ pd.DataFrame(
 1. créer un `numpy.ndarray` à partir de la liste suivante
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 animals = [['snail', 0.1, 2.0],
            ['pig', 17.5, 8.0],
            ['elephant', 40.0, 70.0],
@@ -138,6 +138,8 @@ animals = [['snail', 0.1, 2.0],
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell 1.
 
 import numpy as np
@@ -153,10 +155,14 @@ nd
    Remettez-y le mot `"elephant"`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell 2.
 
 # all elements in the array have type <U32
@@ -167,6 +173,8 @@ print(nd.dtype)
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell 2.
 
 # strings get chopped off if too long
@@ -176,6 +184,8 @@ nd
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell 2.
 
 # reset to the original value
@@ -194,10 +204,14 @@ nd
    ````
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell 3.
 
 import pandas as pd
@@ -211,10 +225,14 @@ Que constatez-vous ?
 (`object` signifie ici `str`)
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell 4.
 
 x = df.loc[2, 'lifespan']
@@ -225,10 +243,14 @@ x, df.lifespan.dtype, type(x)
 Que constatez-vous ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell 5.
 
 x = df.loc[2, 'names']
@@ -240,10 +262,14 @@ affichez la valeur et le type du `'names'` de l'éléphant
 un constat ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell 6.
 
 # pas de souci pour mettre une chaine plus longue
@@ -256,10 +282,14 @@ df
 utilisez l'attribut `dtypes` des `pandas.DataFrame`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell 7.
 
 df.dtypes
@@ -271,10 +301,14 @@ affichez le type du tableau
 que constatez-vous ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell 8.
 
 df.to_numpy()
@@ -284,10 +318,14 @@ df.to_numpy()
 (utilisez `pandas.Series.astype` voir les **rappels** en fin d'exercice)
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell 9.
 
 df['speed'] = df['speed'].astype(float)
@@ -299,10 +337,14 @@ df.dtypes
     a-t-on besoin dans ce cas de convertir les types des colonnes ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # your code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell 10.
 
 df2 = pd.DataFrame(animals, columns=df.columns)
@@ -310,6 +352,8 @@ df2.head(2)
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell
 
 # much simpler: we get the right types right away
