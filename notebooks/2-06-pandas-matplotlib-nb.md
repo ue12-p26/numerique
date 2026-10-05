@@ -15,18 +15,21 @@ language_info:
   nbconvert_exporter: python
 ---
 
-# `matplotlib` et `pandas`
+# `df.plot()` / catégories
 
 ```{code-cell} ipython3
-import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+
+import matplotlib.pyplot as plt
+
+# juste une commodité pour le notebook, pas important
 import IPython
 ```
 
 +++ {"tags": ["framed_cell"]}
 
-## introduction
+## *plot* une dataframe
 
 ````{admonition} →
 Les fonctionnalités de `matplotlib` ont été intégrées avec la librairie `pandas`  
@@ -50,7 +53,7 @@ nous allons voir quelques plots intéressants sur l'exemple des iris
 
 +++ {"tags": ["framed_cell"]}
 
-## la dataframe des `iris`
+### la dataframe des `iris`
 
 ````{admonition} →
 lisons le `csv` des `iris`  avec `pandas`  
@@ -84,10 +87,41 @@ max      7.900000    4.400000   6.900000    2.500000
 
 remarquez que `describe` par défaut  
 n'affiche que les 4 colonnes numériques
-
-(*dans le code ci-dessous, pour plus de lisibilité  
-nous utilisons l'affichage `html` avec `IPython.display.display`*)
 ````
+
++++ {"tags": ["framed_cell", "level_intermediate"]}
+
+::::{admonition} → **digression**: display d'une dataframe avec IPython
+:class: warning dropdown
+
+dans une cellule Jupyter on peut facilement afficher une dataframe, en finissant la cellule par le nom de la dataframe  
+mais comment faire si on veut afficher **plusieurs** dataframes dans la même cellule ?
+
+l'approche naíve consisterait à utilsier un `print()`, mais le résultat est moche !  
+
+```python
+# vous pouvez essayer, le rendu n'est pas très lisible
+
+by_sex = df.groupby(by='Sex')
+
+for group, subdf in by_sex:
+    print(group, subdf.head(1))
+```
+
+pour retrouver la même qualité d'affichage (en html)  
+il faut utiliser la méthode `IPython.display.display()`  
+en important la librairie `IPython`
+
+```python
+# comme ceci ça devient lisible
+
+import IPython
+
+for group, subdf in by_sex:
+    print(group)
+    IPython.display.display(subdf.head(1))
+```
+::::
 
 ```{code-cell} ipython3
 # le code
@@ -99,12 +133,17 @@ IPython.display.display(   df.describe()   )
 
 +++ {"tags": ["framed_cell"]}
 
-## visualisation de la dataframe - `df.plot()`
+### visualisation avec `df.plot()`
 
 ````{admonition} →
 la méthode `plot`  des objets de type `pandas.DataFrame` i.e. `df.plot`  
 permet une première visualisation simple, rapide et informative **des colonnes numériques**  
 qui apporte beaucoup d'informations sur ces données
+
+comme on l'a vu dans le TP sur le tri, `df.plot()` produit:
+- autant de plots que de colonnes numériques
+- dans chacune, **les abscisses sont prises dans l'index**
+- et **les ordonnées dans la colonne** en question
 
 `df.plot()` accepte les mêmes paramètres que la fonction `matplotlib.pyplot.plot`  
 elle permet les mêmes réglages  
@@ -123,19 +162,46 @@ df.plot()
 df.plot();
 ```
 
+:::{admonition} pourquoi c'est mieux qu'avec `plt.plot()` ?
+:class: dropdown attention
+voici ce qu'on obtient si on essaie de le faire "à la main" en matplotlib  
+d'une part c'est plus bavard, et d'autre part on n'a pas la légende...
+
+```{code-cell} ipython3
+plt.figure()
+plt.plot(df.index, df.SepalLength)
+plt.plot(df.index, df.SepalWidth)
+plt.plot(df.index, df.PetalLength)
+plt.plot(df.index, df.PetalWidth)
+plt.show()
+```
+
+:::
+
 +++ {"tags": ["framed_cell"]}
 
-## boxplots des colonnes `df.boxplot`
+### boxplots des colonnes `df.boxplot`
 
 ````{admonition} →
 un `boxplot` montre:  
-le minimum, le maximum, la médiane, le premier et le troisième quartile  
-les (éventuels) outliers
+- la boite: construite à partir de 
+  - la médiane (en vert, aka Q2), 
+  - ainsi que Q1 (premier quartile) et Q3 (l'extérieur de la boite, en bleu)
+- les moustaches (en noir); il s'agit de datapoints, voir la définition ci-dessous
+- les (éventuels) outliers: les points en dehors des moustaches  
+  ces points sont potentiellement aberrants ou simplement des extrêmes  
 
-les **outliers**  
-sont les points en dehors de *bornes* décidées par `boxplot`  
-ces points sont potentiellement aberrants ou simplement des extrêmes  
-(lire la doc pour connaître les bornes considérées)  
+:::{admonition} comment sont définies les moustaches
+:class: tip dropdown
+en détail, le calcul est le suivant:
+- on calcule $IQR = Q3-Q1$
+- puis les bornes: 
+  - $UP = Q3 + 1.5\times IQR$ 
+  - $DOWN = Q1 - 1.5\times IQR$
+- enfin les moustaches sont 
+  - le plus grand datapoint <= $UP$
+  - le plus petit datapoint >= $DOWN$
+:::
 
 nous pouvons dessiner les boxplots ensemble  
 ils sont alors mis à la même échelle  
@@ -188,7 +254,7 @@ plt.tight_layout() # le padding
 
 +++ {"tags": ["framed_cell"]}
 
-## histogrammes `df.hist`
+### histogrammes `df.hist()`
 
 ````{admonition} →
 un histogramme donne la distribution des valeurs d'une colonne
@@ -215,7 +281,6 @@ df.hist('SepalLength', bins=10, color='lightblue')
 
 ```{code-cell} ipython3
 :cell_style: center
-:scrolled: true
 
 # le code
 df.hist()
@@ -225,7 +290,7 @@ plt.title('histogramme de la colonne SepalLength');
 
 +++ {"tags": ["framed_cell"]}
 
-## barchart `df.plot.bar()`
+### barchart `df.plot.bar()`
 
 ````{admonition} →
 prenons un exemple pour illustrer le dessin des barres  
@@ -280,7 +345,9 @@ df_animals.plot.bar(x='lifespan', y='speed');
 
 +++ {"tags": ["framed_cell"]}
 
-## le type de la colonne `'Name'`
+## catégories
+
+### le type de la colonne `'Name'`
 
 ````{admonition} →
 revenons à nos `iris`
@@ -342,7 +409,7 @@ df['Name'].value_counts()
 df['Name'].dtype
 ```
 
-## encodage de `'Name'` en catégories
+### encodage de `'Name'` en catégories
 
 +++
 
@@ -412,10 +479,11 @@ df['Name-code'].value_counts()
 df['Name-code'] = df['Name'].astype('category').cat.codes
 ```
 
-## nuages de points `df.plot.scatter`
+### nuages de points `df.plot.scatter()`
 
 +++
 
+````{admonition} →
 pour mettre en valeur des informations sur nos données  
 on peut dessiner en 2D les colonnes les unes par rapport aux autres  
 avec `df.plot.scatter`
@@ -424,13 +492,6 @@ dessinons les `'SepalLength'` en fonction des `'SepalWidth'`
 
 ```python
 df.plot.scatter(x='SepalLength', y='SepalWidth')
-```
-
-on peut le faire directement en `matplotlib.pyplot.plot`  
-mais il faut alors préciser tous les paramètres (noms des axes...)
-
-```python
-plt.scatter(df['SepalLength'], df['SepalWidth'])
 ```
 
 avec le paramètre `c=`  
@@ -449,14 +510,6 @@ oui, on peut représenter ainsi la catégorie des points
 df.plot.scatter(x='SepalLength', y='SepalWidth', c='Name-code', cmap='viridis');
 ```
 
-avec `matplotlib.pyplot.plot`  
-mais vous n'avez alors que les paramètres par défaut
-
-```python
-plt.scatter(df['SepalLength'], df['SepalWidth'], c=df['Name-code'], cmap='viridis')
-plt.colorbar() # sinon pas de jolie barre de couleur
-```
-
 avec le paramètre `s=` on peut changer la taille des points  
 ou la taille de chaque point  
 par exemple, donnons leur une taille proportionnelle à la largeur des pétales  
@@ -470,6 +523,8 @@ le nuage, la couleur et la taille des points
 
 il faut travailler un peu les paramètres pour que ce soit visible  
 (là la taille est trop peu différenciée, multipliez la)
+
+````
 
 ```{code-cell} ipython3
 # le code
@@ -501,37 +556,46 @@ plt.scatter(df['SepalLength'], df['SepalWidth'], c=df['Name-code'], s=df['PetalW
 
 +++ {"tags": ["level_intermediate"]}
 
-## fabriquer son propre type `category`
+### fabriquer son propre type `category`
 
 +++ {"tags": ["level_intermediate"]}
 
+````{admonition} →
+:class: danger
 *pour les avancés*
 
 avec la technique précédente on n'a pas de **contrôle sur l'ordre** parmi les différentes catégories
 
 imaginez que nous avons maintenant une colonne dont les valeurs uniques sont  
 `bad`, `average`, `good`, `excellent`  
-cette colonne est clairement une colonne de type catégorie ordonnée
+cette colonne est clairement une colonne de type catégorie mais **ordonnée**
 
 on peut définir *son propre type catégoriel* avec la fonction  
 `pd.CategoricalDtype()`  
-dont le paramètre `ordered` permet de dire si la catégorie est ordonnée ou non
+qui permet de créer une catégorie ordonnée avec `ordered=True`
 
 en l'appliquand à la colonne des `'Names'` je peux ensuite trier la dataframe  
 sur cette colonne
 
 ```python
 iris_ord_cat = pd.CategoricalDtype(
-                    categories=['Iris-versicolor', 'Iris-virginica', 'Iris-setosa'],
-                    ordered=True)
-df.Name = df.Name.astype(iris_ord_cat)
+    categories=['Iris-versicolor', 'Iris-virginica', 'Iris-setosa'],
+    ordered=True
+)
+df['Name'] = df.Name.astype(iris_ord_cat)
 df.sort_values(by='Name')
 ```
 
+````
+
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
+# le code
 iris_ord_cat = pd.CategoricalDtype(
-                    categories=['Iris-versicolor', 'Iris-virginica', 'Iris-setosa'],
-                    ordered=True)
+    categories=['Iris-versicolor', 'Iris-virginica', 'Iris-setosa'],
+    ordered=True
+)
 iris_ord_cat
 ```
 
