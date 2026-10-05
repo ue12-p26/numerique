@@ -37,6 +37,8 @@ language_info:
 importez les librairies `numpy` et `pandas`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -45,6 +47,8 @@ importez les librairies `numpy` et `pandas`
 importez la librairie `matplotlib.pyplot` avec le nom `plt`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -56,6 +60,8 @@ lors de la lecture du fichier de données `data/titanic.csv`:
 1. besoin d'aide ? faites `pd.read_csv?`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -66,10 +72,20 @@ en utilisant la méthode `df.plot()`:
 1. plottez la dataframe (pas la série) réduite à la colonne des ages  
 1. utilisez le paramètre de `style` `'rv'` (`r` pour rouge et `v` pour le style: points triangulaires)
 
+:::{admonition} tips
+:class: tip dropdown
+- sans mettre le `style`, vous obtenez un simple *plot* qui, par défaut, **joint les points** dans l'ordre où ils apparaissent dans l'index; c'est OK pour la question 1
+- une fois que précisez un style de point, vous obtenez un *scatter plot*, les points ne sont plus joints entre eux
+- écrit naïvement, vous obtenez l'affichage d'une scorie genre `<Axes: xlabel='PassengerId'>`
+  pour vous en débarrasser, ajouter un `;` à la fin de la dernière ligne de code
+:::
+
 vous allez voir les points *en vrac*; dans la suite on va s'efforcer de les trier, pour mieux
 voir la distribution des âges dans la population concernée
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -85,6 +101,8 @@ en utilisant la méthode `df.sort_values()`:
 3. remarquez que l'indexation a été naturellement conservée
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -95,18 +113,22 @@ en utilisant la méthode `df.sort_values()`:
 1. Que constatez-vous ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ### 7. untangle
 
 la logique de `df.plot()` consiste
-* à **utiliser comme abscisses** l'index de la dataframe
-* et accessoirement à faire autant de plots que de colonnes - ici on n'en a qu'une
+* à utiliser **comme abscisses l'index** de la dataframe
+* et accessoirement à faire **autant de plots que de colonnes** qui servent alors d'ordonnée  
+   bon ici on n'en a qu'une
 
 vous tracez donc le point $(804, 0.42)$ puis le point $(756, 0.67)$ ...  
 alors que vous voudriez tracer le point $(0, 0.42)$ puis le point $(1, 0.67)$ ...  
-c'est à dire: le fait d'utiliser le 'PassengerId' n'est pas bon, on voudrait que les abscisses soient les indices de lignes
+c'est à dire: le fait d'utiliser le **`PassengerId` comme index n'est pas bon**  
+on voudrait que les abscisses soient les indices de lignes
 
 1. une solution: voyez la méthode `reset_index()`
    qui permet de transformer l'index en une colonne normale  
@@ -115,7 +137,14 @@ c'est à dire: le fait d'utiliser le 'PassengerId' n'est pas bon, on voudrait qu
 
 normalement à ce stade vous obtenez la visualisation qu'on cherche
 
+:::{admonition} la taille des points
+:class: dropdown tip
+si vous trouvez que les points sont trop épais, vous pouvez ajuster `markersize`
+:::
+
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -124,13 +153,15 @@ normalement à ce stade vous obtenez la visualisation qu'on cherche
 quand on trie, que faire en cas d'égalité ?  
 en général on choisit plusieurs critères, on trie selon le premier, puis en cas d'égalité selon le second, etc..
 
-*note*: on appelle cela un ordre lexicographique, car c'est - un peu - comme dans un dictionnaire
+*note*: on appelle cela un **ordre lexicographique**, car c'est un peu comme dans un dictionnaire..
 
 +++
 
 ### 1. rechargez la dataframe
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -140,6 +171,8 @@ utilisez `df.sort_values()` pour trier la dataframe suivant la colonne (`'Pclass
 et trier les lignes identiques (passagers de même classe) suivant la colonne (`'Age'`)
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -152,6 +185,8 @@ utiliser la méthode `isna()` sur une série, pour créer un masque de booléens
 ```
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -160,6 +195,8 @@ utiliser la méthode `isna()` sur une série, pour créer un masque de booléens
 combien nous manque-t-il d'ages ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -180,6 +217,8 @@ pour cela voyez par exemple `df.no_numpy()`
 ````
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -189,6 +228,8 @@ trouvez le paramètre de `sort_values()`
 qui permet de mettre ces lignes en début de dataframe lors du tri
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
@@ -202,7 +243,7 @@ et triée selon les ages, puis les prix de billet
 ## tri d'une dataframe selon l'index
 
 reprenez la dataframe du Titanic, en choisissant toujours comme index `PassengerId`  
-et triez-là selon les index
+et triez-là en place selon les index
 
 ```{admonition} *hint*
 :class: dropdown tip
@@ -211,6 +252,8 @@ voyez `df.sort_index()`
 ```
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 

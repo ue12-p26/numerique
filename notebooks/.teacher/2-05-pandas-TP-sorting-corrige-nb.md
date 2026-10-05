@@ -37,10 +37,14 @@ language_info:
 importez les librairies `numpy` et `pandas`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell
 
 import numpy as np
@@ -52,10 +56,14 @@ import pandas as pd
 importez la librairie `matplotlib.pyplot` avec le nom `plt`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell
 
 import matplotlib.pyplot as plt
@@ -69,14 +77,32 @@ lors de la lecture du fichier de données `data/titanic.csv`:
 1. besoin d'aide ? faites `pd.read_csv?`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell
 
 cols = ['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'Fare' ]
 df = pd.read_csv('data/titanic.csv', index_col='PassengerId', usecols=cols)
+```
+
+```{code-cell} ipython3
+:tags: [level_intermediate]
+
+# prune-cell
+
+# ou encore, si on préfère
+
+df = (
+    pd.read_csv("data/titanic.csv")
+    [['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'Fare']]
+    .set_index('PassengerId')
+)
 ```
 
 ### 4. plot
@@ -86,16 +112,36 @@ en utilisant la méthode `df.plot()`:
 1. plottez la dataframe (pas la série) réduite à la colonne des ages  
 1. utilisez le paramètre de `style` `'rv'` (`r` pour rouge et `v` pour le style: points triangulaires)
 
+:::{admonition} tips
+:class: tip dropdown
+- sans mettre le `style`, vous obtenez un simple *plot* qui, par défaut, **joint les points** dans l'ordre où ils apparaissent dans l'index; c'est OK pour la question 1
+- une fois que précisez un style de point, vous obtenez un *scatter plot*, les points ne sont plus joints entre eux
+- écrit naïvement, vous obtenez l'affichage d'une scorie genre `<Axes: xlabel='PassengerId'>`
+  pour vous en débarrasser, ajouter un `;` à la fin de la dernière ligne de code
+:::
+
 vous allez voir les points *en vrac*; dans la suite on va s'efforcer de les trier, pour mieux
 voir la distribution des âges dans la population concernée
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-# prune-cell
+:tags: [level_intermediate]
 
+# prune-cell
+# 1.
+df[['Age']].plot()
+```
+
+```{code-cell} ipython3
+:tags: [level_intermediate]
+
+# prune-cell
+# 2.
 df[['Age']].plot(style='rv');
 ```
 
@@ -111,14 +157,26 @@ en utilisant la méthode `df.sort_values()`:
 3. remarquez que l'indexation a été naturellement conservée
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-# prune-cell
-# on trie dans l'axe des lignes donc `axis=0`
+:tags: [level_intermediate]
 
-df_sorted = df.sort_values(by='Age', ascending=True, axis=0)
+# prune-cell
+
+# en théorie on pourrait aussi faire un inplace=True
+# mais l'énoncé par de 'nouvelle dataframe'
+
+# on trie dans l'axe des lignes donc `axis=0` - mais c'est optionnel
+# aussi, pour être sûr, on peut préciser le sens, mais c'est le défaut
+
+# df_sorted = df.sort_values(by='Age', ascending=True, axis=0)
+# df_sorted = df.sort_values(by='Age', ascending=True)
+df_sorted = df.sort_values(by='Age')
+
 df_sorted.head(4)
 ```
 
@@ -129,13 +187,17 @@ df_sorted.head(4)
 1. Que constatez-vous ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell
 
-# pas de changement majeur, la sortie n'est pas triée
+# pas de changement majeur, la sortie n'est toujours pas triée
 
 df_sorted[['Age']].plot(style='b.');
 ```
@@ -143,12 +205,14 @@ df_sorted[['Age']].plot(style='b.');
 ### 7. untangle
 
 la logique de `df.plot()` consiste
-* à **utiliser comme abscisses** l'index de la dataframe
-* et accessoirement à faire autant de plots que de colonnes - ici on n'en a qu'une
+* à utiliser **comme abscisses l'index** de la dataframe
+* et accessoirement à faire **autant de plots que de colonnes** qui servent alors d'ordonnée  
+   bon ici on n'en a qu'une
 
 vous tracez donc le point $(804, 0.42)$ puis le point $(756, 0.67)$ ...  
 alors que vous voudriez tracer le point $(0, 0.42)$ puis le point $(1, 0.67)$ ...  
-c'est à dire: le fait d'utiliser le 'PassengerId' n'est pas bon, on voudrait que les abscisses soient les indices de lignes
+c'est à dire: le fait d'utiliser le **`PassengerId` comme index n'est pas bon**  
+on voudrait que les abscisses soient les indices de lignes
 
 1. une solution: voyez la méthode `reset_index()`
    qui permet de transformer l'index en une colonne normale  
@@ -157,14 +221,23 @@ c'est à dire: le fait d'utiliser le 'PassengerId' n'est pas bon, on voudrait qu
 
 normalement à ce stade vous obtenez la visualisation qu'on cherche
 
+:::{admonition} la taille des points
+:class: dropdown tip
+si vous trouvez que les points sont trop épais, vous pouvez ajuster `markersize`
+:::
+
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell
 
-df_sorted.reset_index()[['Age']].plot(style='b.');
+df_sorted.reset_index()[['Age']].plot(style='b.', markersize=1);
 ```
 
 ## tri des lignes selon plusieurs critères
@@ -172,17 +245,21 @@ df_sorted.reset_index()[['Age']].plot(style='b.');
 quand on trie, que faire en cas d'égalité ?  
 en général on choisit plusieurs critères, on trie selon le premier, puis en cas d'égalité selon le second, etc..
 
-*note*: on appelle cela un ordre lexicographique, car c'est - un peu - comme dans un dictionnaire
+*note*: on appelle cela un **ordre lexicographique**, car c'est un peu comme dans un dictionnaire..
 
 +++
 
 ### 1. rechargez la dataframe
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell
 
 cols = ['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'Fare' ]
@@ -195,10 +272,14 @@ utilisez `df.sort_values()` pour trier la dataframe suivant la colonne (`'Pclass
 et trier les lignes identiques (passagers de même classe) suivant la colonne (`'Age'`)
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell 2.
 
 df_sorted = df.sort_values(by=['Pclass', 'Age'])
@@ -214,11 +295,18 @@ utiliser la méthode `isna()` sur une série, pour créer un masque de booléens
 ```
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell
+
+# à nouveau, par défaut c'est avec
+# ascending=True, axis=0,
 
 df_sorted_isna = df_sorted[df_sorted['Age'].isna()]
 df_sorted_isna
@@ -229,10 +317,14 @@ df_sorted_isna
 combien nous manque-t-il d'ages ?
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell
 
 len(df_sorted_isna)
@@ -255,10 +347,14 @@ pour cela voyez par exemple `df.no_numpy()`
 ````
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell
 
 # les nan vont plutôt à la fin
@@ -267,6 +363,8 @@ df_sorted.tail()
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell
 
 # pour voir un aperçu de tous les résultats, et visualiser 
@@ -277,6 +375,8 @@ df_sorted['Age'].isna().astype(int).to_numpy()
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell
 
 # ou encore, pour afficher les positions des lignes en question, et 
@@ -291,13 +391,17 @@ trouvez le paramètre de `sort_values()`
 qui permet de mettre ces lignes en début de dataframe lors du tri
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell
 
-df_sorted.sort_values(by='Age', ascending=True, axis=0, na_position='first').head()
+df_sorted.sort_values(by='Age', na_position='first').head()
 ```
 
 ### 7. sort again
@@ -316,7 +420,7 @@ df[df.Age.notna()].sort_values(by=['Age', 'Fare'])
 ## tri d'une dataframe selon l'index
 
 reprenez la dataframe du Titanic, en choisissant toujours comme index `PassengerId`  
-et triez-là selon les index
+et triez-là en place selon les index
 
 ```{admonition} *hint*
 :class: dropdown tip
@@ -325,10 +429,14 @@ voyez `df.sort_index()`
 ```
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
+:tags: [level_intermediate]
+
 # prune-cell
 
 cols = ['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'Fare' ]
