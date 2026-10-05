@@ -24,6 +24,10 @@ import matplotlib.pyplot as plt
 ```
 
 ```{code-cell} ipython3
+import IPython
+```
+
+```{code-cell} ipython3
 df = pd.read_csv('data/titanic.csv', index_col=0)
 df.head(3)
 ```
@@ -89,7 +93,7 @@ partition par (`by`) l'unique colonne `Sex`
 by_sex = df.groupby(by='Sex')
 ```
 
-l'objet rendu par la méthode est de type `pandas.DataFrameGroupBy`
+l'objet rendu par la méthode est de type `DataFrameGroupBy`
 ````
 
 ```{code-cell} ipython3
@@ -108,9 +112,10 @@ by_sex
 ### accès aux sous-dataframes
 
 ````{admonition} →
-la méthode `pandas.DataFrameGroupBy.size()`  
+que faire avec un objet de type `DataFrameGroupBy` ?  
+la méthode `gb.size()`  
 donne la taille des deux partitions  
-(dans un objet de type `pandas.Series`)
+(sous la forme d'objet de type `pandas.Series`)
 
 ```python
 by_sex.size()
@@ -120,7 +125,10 @@ male      577
 dtype: int64
 ```
 
-l'objet `pandas.DataFrameGroupBy` est un objet **itérable**  
+:::{admonition} on peut aussi itérer
+:class: attention dropdown
+moins fréquemment utile, mais:  
+l'objet `pandas.DataFrameGroupBy` est aussi un objet **itérable**  
 qui vous donne les couples `key, dataframe`
 
 ```python
@@ -132,6 +140,7 @@ for group, subdf in by_sex:
 ```
 
 vous pouvez donc facilement parcourir toutes les sous-dataframes
+:::
 ````
 
 ```{code-cell} ipython3
@@ -191,7 +200,7 @@ by_sex[['Survived', 'Fare']].sum()
 # souvent on traite un groupby comme une dataframe
 # ce qui a l'effet d'appliquer l'opération (ici ['Age'])
 # à toutes les sous-dataframe
-by_sex.Age.max()
+by_sex['Age'].max()
 ```
 
 ```{code-cell} ipython3
@@ -210,7 +219,16 @@ qui retourne une dataframe
 ```python
 by_sex.get_group('female')
 ```
+
+comme pour les itérations, en général on n'a besoin de ça que pour farfouiller *à la main* dans les données...
+
 ````
+
+```{code-cell} ipython3
+# cette fois on obtient bien une dataframe
+
+isinstance(by_sex.get_group('female'), pd.DataFrame)
+```
 
 ```{code-cell} ipython3
 by_sex.get_group('female').head(4)
@@ -227,7 +245,7 @@ passez à `df.groupby()` une **liste des colonnes**
 la méthode `df.groupby()`
 
 * calcule les valeurs distinctes de chaque colonne (comme dans le cas du critère unique)
-* mais ensuite il en fait le **produit cartésien**
+* et ensuite il en fait le **produit cartésien**
 * on obtient ainsi les clés des groupes sous la forme de tuples
 
 prenons les critères `Pclass` et`Sex`
@@ -263,7 +281,7 @@ Pclass  Sex
 dtype: int64
 ```
 
-nous découvrons là une `pandas.Series` avec un **`index` composé**  
+nous découvrons là une `pandas.Series` avec un `index` **composé de tuples**  
 qu'en pandas on appelle **un *MultiIndex***
 ````
 
@@ -283,7 +301,7 @@ partons du résultat de `by_class_sex.size()` qui est une `pandas.Series`
 
 ```python
 type(by_class_sex.size())
--> pandas.core.series.Series
+-> pandas.Series
 ```
 
 son `index` est un `MultiIndex`
@@ -340,7 +358,7 @@ computed_index == set(df.groupby(['Pclass', 'Sex']).size().index)
 ### les éléments de l'index sont des tuples
 
 ````{admonition} →
-les éléments dans le `MultiIndex` sont des tuples Python
+les éléments dans le `MultiIndex` sont donc des tuples Python
 
 par exemple, nous pouvons toujours itérer sur les sous-dataframes  
 de la partition, sauf qu'ici ce qui décrit le groupe, c'est un 2-tuple  
@@ -371,7 +389,7 @@ voyez l'exercice sur les partitions `groupby` [déplacé en fin de notebook](#la
 
 +++
 
-## intervalles de valeurs d'une colonne
+## catégorie à partir d'une colonne numérique
 
 +++ {"tags": ["framed_cell"]}
 
@@ -416,10 +434,11 @@ une nouvelle colonne qui contient les intervalles d'ages
 
 `pandas.cut`
 
-* s'applique à une colonne de votre dataframe
+* prend en paramètre une `Series`
 * vous devez précisez les bornes de vos intervalles avec le paramètre `bins`  
 * les bornes min des intervalles seront exclues  
-* la fonction retourne une nouvelle colonne
+  (autrement dit vous pouvez mentalement interpréter `(0, 12]` comme `]0, 12]` si vous préférez)
+* la fonction retourne une nouvelle `Series`, avec le même index et de type `category`
 
 ```python
 pd.cut(df['Age'], bins=[0, 12, 19, 55, 100])
@@ -444,7 +463,7 @@ remarquez
   (les bornes se comportent comme des poteaux: ici 5 bornes produisent 4 intervalles)  
 
 * les bornes min des intervalles sont bien exclues
-* la colonne est de type `category` (cette catégorie est ordonnée)
+* la colonne est de type `category`,  et cette catégorie est ordonnée
 * des labels sont générés par défaut
 * les items en dehors des bornes sont transformés en `nan`
 
@@ -505,8 +524,6 @@ print("après", df.columns)
 # df.drop('Age', axis=1, inplace=True)
 ```
 
-+++ {"tags": ["framed_cell"]}
-
 ###  groupement avec ces intervalles
 
 ````{admonition} →
@@ -518,22 +535,22 @@ comme c'est un type catégorie, vous pouvez utiliser cette colonne dans un `grou
 df.groupby(['Age-class', 'Survived', ])
 ```
 
-vous avez désormais  
-une idée de l'utilisation de `groupby`  
+vous avez désormais une idée de l'utilisation de `groupby`  
 pour des recherches multi-critères sur une table de données
 
-**exercice pour les élèves avancés**  
+::::{admonition} exercice
 calculez les taux de survie de chaque classe d'age par classes de cabines
+
+:::{admonition} solution
+:class: dropdown tip
+```{code-cell} python
+df.groupby(['Age-class', 'Survived']).size()
+```
+:::
+::::
 ````
 
 ```{code-cell} ipython3
-# le code
-df.groupby(['Age-class', 'Survived']).size()
-```
-
-```{code-cell} ipython3
-:scrolled: true
-
 # prune-cell
 df.groupby(['Age-class', 'Pclass' ])['Survived'].mean()
 ```
@@ -549,7 +566,7 @@ spécifiquement, on veut souvent afficher:
 * une valeur (précisément, une aggrégation des valeurs) d'une colonne  
 * en fonction de deux autres colonnes (catégorielles)    
 * qui sont utilisées dans les directions horizontale et verticale  
-  (une colonne sera en index et l'autre en columns)
+  (typiquement, une colonne sera en index et l'autre en columns)
 
 par exemple, on voudrait visualiser:
 
@@ -562,7 +579,7 @@ par exemple, on voudrait visualiser:
   ```
 
 il existe une méthode `pivot_table()` qui s'avère très pratique  
-pour faire ce genre de traitement **en un seul appel**  
+pour faire précisément ce genre de traitement **en un seul appel**  
 comme toujours, pensez à lire la doc avec `df.pivot_table?`
 
 les paramètres les plus importants sont
@@ -608,7 +625,8 @@ df.pivot_table(
 
 `````{admonition} →
 dans le cas présent on n'a **pas précisé** la fonction d'**aggrégation**  
-du coup c'est la moyenne qui est utilisée, sur la valeur de `Survived`  
+du coup c'est **la moyenne** qui est utilisée comme agrégation,  
+sur la valeur de `Survived` (car `values='Survived'`)   
 qui vaut 0 ou 1 selon les cas, et donc on obtient le taux de survie  
 
 ````{admonition} → les aggrégations prédéfinies
@@ -666,18 +684,22 @@ voici la liste des raccourcis connus - ils correspondent à la méthode du même
 1. pareil en affichant pour chaque groupe: 
    - le nombre de personnes concernées
    - le nombre de survivants 
-   - **et** le taux de survie  
-   que pensez-vous de la présentation du résultat ?
+   - **et** le taux de survie
+1. (optionnel) que pensez-vous de la présentation du résultat ?  
+   ce pourrait être l'occasion de regarder 
+   [du coté de `Index.reorder_levels()`](https://pandas.pydata.org/docs/reference/api/pandas.MultiIndex.reorder_levels.html)
 ````
 
 `````
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-:tags: [level_basic]
+:tags: [level_intermediate]
 
 # prune-cell 1.
 df.pivot_table(
@@ -689,7 +711,7 @@ df.pivot_table(
 ```
 
 ```{code-cell} ipython3
-:tags: [level_basic]
+:tags: [level_intermediate]
 
 # prune-cell 2.
 df.pivot_table(
@@ -701,9 +723,9 @@ df.pivot_table(
 ```
 
 ```{code-cell} ipython3
-:tags: [level_basic]
+:tags: [level_intermediate]
 
-# prune-cell 2.bis
+# prune-cell 3
 # room for improvement; often it's best to have the 2 aggregated results side by side
 pivot = df.pivot_table(
       values='Survived',
@@ -715,17 +737,17 @@ pivot = df.pivot_table(
 # aggfunc, sex
 # to get the measurements grouped as expected, we need to swap these 2 levels
 pivot.columns = pivot.columns.reorder_levels([1, 0])
-# and then sort them in lexicographic orde
+# and then sort them in lexicographic order
 pivot.sort_index(axis=1, inplace=True)
 pivot
 ```
 
 +++ {"tags": ["framed_cell"]}
 
-### `pivot_table()` et multi-index
+### `pivot_table()` et multiples critères
 
 ````{admonition} →
-comme on l'a vu, il est possible de passer aux 3 paramètres  
+en fait, il est même possible de passer aux 3 paramètres  
 `values`, `index` et `columns` des **listes** de colonnes
 
 le résultat dans ce cas utilise un `MultiIndex`  
@@ -749,6 +771,8 @@ df = pd.read_csv('data/titanic.csv')
 ```
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 # plusieurs values
 # df2 = ...
@@ -758,33 +782,8 @@ df = pd.read_csv('data/titanic.csv')
 ```
 
 ```{code-cell} ipython3
-:cell_style: center
 :tags: [level_basic]
 
-# prune-begin
-df2 = df.pivot_table(
-    values=['Survived', 'Age'],
-    index='Pclass',
-    columns='Sex',
-)
-df2
-```
-
-```{code-cell} ipython3
-:cell_style: center
-:tags: [raises-exception, level_basic]
-
-df2.columns
-```
-
-```{code-cell} ipython3
-:tags: [raises-exception, level_basic]
-
-# prune-end
-df2.index
-```
-
-```{code-cell} ipython3
 # votre code
 # plusieurs columns
 # df3 = ...
@@ -794,32 +793,8 @@ df2.index
 ```
 
 ```{code-cell} ipython3
-:cell_style: center
 :tags: [level_basic]
 
-# prune-begin
-df3 = df.pivot_table(
-    values='Age',
-    index='Pclass',
-    columns=['Sex', 'Embarked'],
-)
-df3
-```
-
-```{code-cell} ipython3
-:tags: [raises-exception, level_basic]
-
-df3.columns
-```
-
-```{code-cell} ipython3
-:tags: [raises-exception, level_basic]
-
-# prune-end
-df3.index
-```
-
-```{code-cell} ipython3
 # votre code
 # plusieurs index
 # df4 = ...
@@ -830,9 +805,64 @@ df3.index
 
 ```{code-cell} ipython3
 :cell_style: center
-:tags: [level_basic]
+:tags: [level_intermediate]
 
 # prune-begin
+```
+
+```{code-cell} ipython3
+:cell_style: center
+:tags: [level_intermediate]
+
+df2 = df.pivot_table(
+    values=['Survived', 'Age'],
+    index='Pclass',
+    columns='Sex',
+)
+df2
+```
+
+```{code-cell} ipython3
+:cell_style: center
+:tags: [raises-exception, level_intermediate]
+
+df2.columns
+```
+
+```{code-cell} ipython3
+:tags: [raises-exception, level_intermediate]
+
+df2.index
+```
+
+```{code-cell} ipython3
+:cell_style: center
+:tags: [level_intermediate]
+
+df3 = df.pivot_table(
+    values='Age',
+    index='Pclass',
+    columns=['Sex', 'Embarked'],
+)
+df3
+```
+
+```{code-cell} ipython3
+:tags: [raises-exception, level_intermediate]
+
+df3.columns
+```
+
+```{code-cell} ipython3
+:tags: [raises-exception, level_intermediate]
+
+df3.index
+```
+
+```{code-cell} ipython3
+:cell_style: center
+:tags: [level_intermediate]
+
 df4 = df.pivot_table(
     values='Age',
     index=['Pclass', 'Embarked'],
@@ -842,168 +872,113 @@ df4
 ```
 
 ```{code-cell} ipython3
-:tags: [raises-exception, level_basic]
+:tags: [raises-exception, level_intermediate]
 
 df4.columns
 ```
 
 ```{code-cell} ipython3
-:tags: [raises-exception, level_basic]
+:tags: [raises-exception, level_intermediate]
 
-# prune-end
 df4.index
 ```
 
-voyez l'exercice sur `pivot_table()` [déplacé en fin de notebook](#label-exo-pivot)
-
-## accès aux groupes
-
-````{admonition} →
-ce n'est pas fréquemment utile, mais on peut accéder aux différents groupes, et cela principalement de deux façons
-
-* en itérant directement sur l'objet groupby
-* en utilisant la méthode `get_group()`
-
-```python
-by_sex.groups
-    ->
-{'female': [499, 395, 703, 859, ...], 'male': [552, 638, 261, 811, ...]}
-```
-
-on peut utiliser cette information pour inspecter plus finement  
-le contenu du groupby  
-
-par exemple pour afficher les noms des 3 premiers membres de chaque groupe
-
-```python
-for group, indexes in by_sex:
-    print(group, df.loc[indexes[:3], 'Name'])
-```
-
-et pour obtenir la dataframe des femmes
-
-```python
-by_sex.get_group('female')
-````
-
 ```{code-cell} ipython3
-# on se remet dans le contexte
-df = pd.read_csv('data/titanic.csv', index_col=0)
-by_sex = df.groupby(by='Sex')
-```
+:tags: [raises-exception, level_intermediate]
 
-```{code-cell} ipython3
-:tags: [raises-exception]
-
-# le code
-
-# on peut itérer directement sur le groupby
-for group, indexes in by_sex:
-    print(f"==== {group}\n{df.loc[:, 'Name'].iloc[:3]}")
-```
-
-```{code-cell} ipython3
-# le code
-by_sex.get_group('female').head(3)
+# prune-end
 ```
 
 ## `groupby.filter()` - optionnel
 
+````{admonition} →
 pour enlever de la dataframe des lignes correspondants à des groupes qui vérifient une certaine propriété
 
 on récupère comme résultat **une dataframe** (et non pas un groupby comme on aurait pu le penser)
 
-```{code-cell} ipython3
-titanic = pd.read_csv("data/titanic.csv")
+pour illustrer ça, on ne va conserver que les groupes dont la taille est inférieure à 100  
+c'est très artificiel comme exemple, mais peu importe; on écrirait
 
-df = titanic.copy()
+```python
+extract = gb.filter(lambda df: len(df) <= 100)
+```
+
+la fonction en paramètre doit s'appliquer à une dataframe
+
+à ce stade on a une dataframe qui ne contient que les personnes appartenant aux petits groupes
+
+````
+
+```{code-cell} ipython3
+# le code
+
+df = pd.read_csv("data/titanic.csv")
+
 gb = df.groupby(by=['Sex', 'Pclass'])
+
+# pour construire une dataframe ne contenant que les groupes 
+# qui satisfont une certaine condition
+extract = gb.filter(lambda df: len(df) <= 100)
+```
+
+```{code-cell} ipython3
+# pour vérifier: 
+# regardons les tailles des groupes
 
 print(f"titanic has {len(df)} items")
 for group, subdf in gb:
     print(f"group {group} has {len(subdf)} matches")
 ```
 
-imaginons qu'on ne veuille garder que les groupes qui ont un nombre pair de membres  
-c'est un peu tiré par les cheveux, mais il n'y a qu'un seul groupe avec un cardinal impair  
-et donc c'est facile de vérifier qu'on fait bien le travail, on doit trouver 891 - 347 = 544 éléments
-
-on ferait alors tout simplement
+on doit donc ne retenir que 94+76 = 170 personnes
 
 ```{code-cell} ipython3
-# construire une dataframe ne contenant que les groupes 
-# qui satisfont une certaine condition
-
-extract = gb.filter(lambda df: len(df) %2 == 0)
-print(f"the extract has {len(extract)} items left")
+len(extract) == (94 + 76)
 ```
 
 ***
 
 ## `groupby.transform()` - optionnel
 
-+++ {"tags": ["level_intermediate", "framed_cell"]}
++++ {"tags": ["framed_cell", "level_intermediate"]}
 
-::::{admonition} → **digression**: display d'une dataframe avec IPython
-:class: warning dropdown
-
-dans une cellule Jupyter on peut facilement afficher une dataframe, en finissant la cellule par le nom de la dataframe  
-mais comment faire si on veut afficher **plusieurs** dataframes dans la même cellule ?
-
-l'approche naíve consisterait à utilsier un `print()`, mais le résultat est moche !  
-
-```python
-# vous pouvez essayer, le rendu n'est pas très lisible
-
-by_sex = df.groupby(by='Sex')
-
-for group, subdf in by_sex:
-    print(group, subdf.head(1))
-```
-
-pour retrouver la même qualité d'affichage (en html)  
-il faut utiliser la méthode `IPython.display.display()`  
-en important la librairie `IPython`
-
-```python
-# comme ceci ça devient lisible
-
-import IPython
-
-for group, subdf in by_sex:
-    print(group)
-    IPython.display.display(subdf.head(1))
-```
-::::
-
+````{admonition} →
 pour appliquer aux différents groupes une fonction **qui prend en compte les éléments du groupe**  
 
 exemples d'application typiques:
 - centrer chacun des groupes autour de la moyenne (du groupe)
 - remplacer les NaN par la moyenne du groupe
 
+```python
+df['Age'] = gb['Age'].transform(lambda series: series-series.mean())
+```
+
+remarquez que la fonction travaille cette fois en fait sur une série
+
+on peut utiliser cette approche pour, par exemple, remplir les âges manquants avec la moyenne du groupe
+
+````
+
 ```{code-cell} ipython3
 # centrons la colonne des ages **groupe par groupe**
 # avec nos 6 groupes habituels
 
-# à nouveau ce n'est sans doute pas très utile en pratique, mais bon 
+# à nouveau c'est un peu artificiel comme exemple, never mind
 
-df = titanic.copy()
+df = pd.read_csv("data/titanic.csv")
 gb = df.groupby(by=['Sex', 'Pclass'])
 
 # on retire à chaque Age la moyenne d'age **du groupe**
 
-df['Age'] = gb['Age'].transform(lambda df: df-df.mean())
+df['Age'] = gb['Age'].transform(lambda series: series-series.mean())
 df.head(3)
 ```
 
 ```{code-cell} ipython3
-import IPython
-
 # utilisons la même approche pour remplir les ages manquants
 # par la moyenne de chaque groupe
 
-df = titanic.copy()
+df = pd.read_csv("data/titanic.csv")
 gb = df.groupby(by=['Sex', 'Pclass'])
 
 # pour pouvoir vérifier qu'on a bien fait le job
@@ -1029,7 +1004,7 @@ IPython.display.display(df.pivot_table(values="Age", index="Sex", columns="Pclas
 - qu'on utilise généralement **comme un proxy**
   - qui va propager les traitements sur les différents "morceaux"
   - que l'on peut agréger ensuite "normalement"
-- lorsqu'on utilise plusieurs critères les index deviennent des MultiIndex
+- lorsqu'on utilise plusieurs critères les index deviennent des `MultiIndex`
   - c'est-à-dire dont les valeurs sont des tuples
 - avec `pivot_table()` on peut facilement obtenir des tables de synthèse
   - en fait, `pivot_table()` utilise `groupby` sans le dire
@@ -1039,8 +1014,10 @@ IPython.display.display(df.pivot_table(values="Age", index="Sex", columns="Pclas
 
 ## pour en savoir plus
 
-- pour creuser cette notion de `stack()/unstack()`, et comment `pivot_table()` s'en sert, voyez ce document  
-  <https://numerique-exos.info-mines.paris/pandas-howtos/pivot-unstack-groupby/howto-pivot-unstack-groupby-nb/>
+- pour creuser cette notion de `stack()/unstack()`, et comment `pivot_table()` s'en sert, voyez
+
+  - ce document <https://numerique-exos.info-mines.paris/pandas-howtos/pivot-unstack-groupby/howto-pivot-unstack-groupby-nb/>
+  - ou encore celui-ci <https://numerique-exos.info-mines.paris/pandas-tps/merge-group/readme-merge-group-nb/>
 
 - on recommande la lecture de cet article dans la documentation `pandas`, qui approfondit le sujet et notamment la notion de `split-apply-combine`  
   (qui rappelle, de loin, la notion de *map-reduce*)  
@@ -1058,11 +1035,13 @@ on veut calculer la partition de la dataframe du titanic avec comme critères:
    proposez une manière de calculer le nombre probable de sous parties dans la partition
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-:tags: [level_basic]
+:tags: [level_intermediate]
 
 # prune-cell 1.
 
@@ -1070,7 +1049,7 @@ df.Sex.nunique() * df.Pclass.nunique() * df.Survived.nunique()
 ```
 
 ```{code-cell} ipython3
-:tags: [level_basic]
+:tags: [level_intermediate]
 
 # prune-cell 1.
 
@@ -1087,11 +1066,13 @@ math.prod(
    et affichez les nombres d'items par groupe
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-:tags: [level_basic]
+:tags: [level_intermediate]
 
 # prune-cell 2.
 
@@ -1102,11 +1083,13 @@ groups.size()
 3. affichez la dataframe des entrées pour les femmes qui ont péri et qui voyagaient en 1ère classe
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-:tags: [level_basic]
+:tags: [level_intermediate]
 
 # prune-cell 3.
 
@@ -1116,11 +1099,13 @@ groups.get_group((1, 'female', 0))
 4. **révision**: refaites la même extraction sans utiliser un `groupby()` en utilisant un masque
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-:tags: [level_basic]
+:tags: [level_intermediate]
 
 # prune-cell
 
@@ -1147,11 +1132,13 @@ df[mask]
    ```
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-:tags: [level_basic]
+:tags: [level_intermediate]
 
 # prune-cell
 
@@ -1167,7 +1154,7 @@ D
 ```
 
 ```{code-cell} ipython3
-:tags: [level_basic]
+:tags: [level_intermediate]
 
 # prune-cell
 
@@ -1185,7 +1172,7 @@ D
 ```
 
 ```{code-cell} ipython3
-:tags: [level_basic]
+:tags: [level_intermediate]
 
 # prune-cell
 
@@ -1206,11 +1193,13 @@ D
    voyez la documentation de `pd.Series`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-:tags: [level_basic]
+:tags: [level_intermediate]
 
 # prune-cell
 
@@ -1228,11 +1217,13 @@ df.head(2)
 1. affichez les valeurs min, max, et moyenne, de la colonne 'magnesium'
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-:tags: [level_basic]
+:tags: [level_intermediate]
 
 # prune-cell
 summary = df.magnesium.describe()
@@ -1242,11 +1233,13 @@ summary
 2. définissez deux catégories selon que le magnesium est en dessous ou au-dessus de la moyenne (qu'on appelle `mag-low` et `mag-high`); rangez le résultat dans une colonne `mag-cat`
 
 ```{code-cell} ipython3
+:tags: [level_basic]
+
 # votre code
 ```
 
 ```{code-cell} ipython3
-:tags: [level_basic]
+:tags: [level_intermediate]
 
 # prune-cell
 
@@ -1263,6 +1256,12 @@ df.head()
 
 ```{code-cell} ipython3
 :tags: [level_basic]
+
+# votre code
+```
+
+```{code-cell} ipython3
+:tags: [level_intermediate]
 
 # prune-cell
 
