@@ -10,6 +10,7 @@ openpyxl
 ipythontutor
 folium
 geopandas
+mapclassify # needed by geopandas explore()
 
 # tooling
 jupyter
