@@ -344,3 +344,224 @@ plt.savefig("media/3-05-exo-pairplot.png")
 ## conclusion
 
 ce (très) rapide survol devrait vous convaincre de l'utilité de cette librairie, qui permet de gagner beaucoup de temps pour l'analyse visuelle de vos données
+
+
+## optional: more examples with seaborn
+
++++
+
+in this optional section we go through a longer example of data exploration,  
+on a dataset about penguins
+
+### loading the penguins dataset
+
+```{code-cell} ipython3
+# we look at a data set on penguins
+
+# white background with a grid
+sns.set_style('whitegrid')
+
+penguins = sns.load_dataset('penguins')
+penguins.head(3)
+```
+
+### a simple relplot
+
+```{code-cell} ipython3
+# let's see if there is a correlation
+# between bill and flipper length
+
+sns.relplot(
+    data=penguins,
+    x='bill_length_mm',
+    y='flipper_length_mm');
+```
+
+we do observe a correlation, and it seems there are some clusters;  
+let's see if it is due to species
+
+### colored relplot
+
+```{code-cell} ipython3
+# hue controls the color of the dots
+
+sns.relplot(
+    data=penguins,
+    x='bill_length_mm',
+    y='flipper_length_mm',
+    hue='species');
+```
+
+is there a correlation with the body mass ?  
+we can add this fourth dimension using the size of the dots
+
+### relplot with dot size
+
+```{code-cell} ipython3
+# size controls the size of the dots
+# and sizes gives the range of dot sizes
+
+sns.relplot(
+    data=penguins,
+    x='bill_length_mm',
+    y='flipper_length_mm',
+    hue='species',
+    size='body_mass_g',
+    sizes=(1, 200));
+```
+
+nice, but a bit overloaded; let's split on columns
+
+### relplot with subfigures in columns
+
+```{code-cell} ipython3
+# col controls the subfigures in columns
+# the same variable can be used with different representations
+
+sns.relplot(
+    data=penguins,
+    x='bill_length_mm',
+    y='flipper_length_mm',
+    hue='species',
+    size='body_mass_g',
+    sizes=(1, 200),
+    col='species');
+```
+
+ok, but are there specificities per island of observation ?
+
+### relplot with one column per island
+
+```{code-cell} ipython3
+sns.relplot(
+    data=penguins,
+    x='bill_length_mm',
+    y='flipper_length_mm',
+    hue='species',
+    size='body_mass_g',
+    sizes=(1, 200),
+    col='island');
+```
+
+and now, what about the impact of sex ?
+
+### relplot with rows and columns
+
+```{code-cell} ipython3
+# row controls the subfigures in rows
+
+sns.relplot(
+    data=penguins,
+    x='bill_length_mm',
+    y='flipper_length_mm',
+    hue='species',
+    size='body_mass_g',
+    sizes=(1, 200),
+    col='island',
+    row='sex');
+```
+
+it seems Chinstrap and Adelie have close body masses; let's check
+
+### same relplot, other columns
+
+```{code-cell} ipython3
+# this time body mass is on the X axis
+# and the dot size shows the bill length
+
+sns.relplot(
+    data=penguins,
+    x='body_mass_g',
+    y='flipper_length_mm',
+    hue='species',
+    size='bill_length_mm',
+    sizes=(1, 200),
+    col='island',
+    row='sex');
+```
+
+Chinstrap and Adelie seem to have the same body mass but different bill lengths;  
+let's check the distributions
+
+### distributions with displot
+
+```{code-cell} ipython3
+# the Y axis depicts a proportion in the dataset
+# ecdf = empirical cumulative distribution function
+
+sns.displot(
+    data=penguins,
+    x='body_mass_g',
+    hue='species',
+    kind='ecdf');
+```
+
+```{code-cell} ipython3
+# kde = kernel density estimation
+
+sns.displot(
+    data=penguins,
+    x='body_mass_g',
+    hue='species',
+    kind='kde');
+```
+
+distributions can be observed using very different representations,  
+here using `displot()`
+
+### displot per species
+
+```{code-cell} ipython3
+# we do not observe body mass differences
+# for the same species on different islands
+
+sns.displot(
+    data=penguins,
+    x='body_mass_g',
+    hue='island',
+    kind='ecdf',
+    col='species');
+```
+
+### distributions with catplot
+
+```{code-cell} ipython3
+sns.catplot(
+    data=penguins,
+    x='species',
+    y='body_mass_g',
+    kind='swarm');
+```
+
+```{code-cell} ipython3
+sns.catplot(
+    data=penguins,
+    x='species',
+    y='body_mass_g',
+    kind='box');
+```
+
+the same distributions, observed here using `catplot()`
+
+### jointplot
+
+```{code-cell} ipython3
+# jointplot makes nice bivariate distributions
+
+sns.jointplot(
+    data=penguins,
+    x='body_mass_g',
+    y='flipper_length_mm',
+    hue='species');
+```
+
+### pairplot
+
+```{code-cell} ipython3
+# pairplot to see all correlations and distributions
+# for all numerical columns
+
+sns.pairplot(
+    data=penguins,
+    hue='species');
+```
