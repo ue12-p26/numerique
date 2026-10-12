@@ -32,9 +32,9 @@ tips = sns.load_dataset('tips')
 ```
 
 ```{code-cell} ipython3
-# voyons les pingouins
-df = tips
+# voyons celui-ci
 
+df = tips
 df.head(5)
 ```
 
@@ -64,7 +64,9 @@ voyons cela sur quelques exemples
 
 ## `relplot()`
 
-dans la table des pingouins, on choisit les deux colonnes `total_bill` et `tip` pour voir leur corrélation
+### 2 dimensions
+
+dans la table des tips, on choisit les deux colonnes `total_bill` et `tip` pour voir leur corrélation
 
 ```{code-cell} ipython3
 # commençons par une forme
@@ -75,8 +77,8 @@ sns.relplot(data=df, x='total_bill', y='tip');
 
 jusque-là, rien de bien original; mais en fait avec `seaborn` on peut utiliser davantage que ces deux dimensions `x` et `y`, et notamment (on va voir des exemples tout de suite)
 
-- `hue` pour choisir la couleur 
-- `style` pour choisir la forme (genre x ou o) 
+- `hue` pour choisir la couleur
+- `style` pour choisir la forme (genre x ou o)
 - `size` pour la taille des points
 
 et même d'autres plus intéressantes
@@ -88,13 +90,15 @@ ce qui en tout, permet de faire en principe des visualisations à 7 dimensions (
 
 comme promis voici quelques exemples
 
+### 3 dimensions
+
 ```{code-cell} ipython3
 # hue=
 #
-# la même visu mais qui fait ressortir 
+# la même visu mais qui fait ressortir
 # le déjeuner et le diner en couleurs
 
-sns.relplot(data=df, x='total_bill', y='tip', 
+sns.relplot(data=df, x='total_bill', y='tip',
             hue='time',   # time vaut 'Lunch' ou 'Dinner'
            );
 ```
@@ -104,10 +108,13 @@ sns.relplot(data=df, x='total_bill', y='tip',
 #
 # toujours la même donnée, mais cette fois
 # on met le déjeuner à gauche et le diner à droite
-sns.relplot(data=df, x='total_bill', y='tip', 
+
+sns.relplot(data=df, x='total_bill', y='tip',
             col='time',
            );
 ```
+
+### jusqu'à 7 dimensions
 
 ```{code-cell} ipython3
 # etc etc
@@ -115,8 +122,8 @@ sns.relplot(data=df, x='total_bill', y='tip',
 # et donc en tout on peut mettre en évidence
 # jusque 7 dimensions
 
-sns.relplot(data=df, 
-            x='total_bill', y='tip', 
+sns.relplot(data=df,
+            x='total_bill', y='tip',
             col='time', row='day',
             hue='sex', size='size', style='smoker',
            );
@@ -154,9 +161,9 @@ fmri.head(10)
 ```
 
 ```{code-cell} ipython3
-# si on ajoute `kind=line` on indique qu'on veut un "lineplot" 
+# si on ajoute `kind=line` on indique qu'on veut un "lineplot"
 # et non pas un "scatterplot" comme tout à l'heure
-# dans ce cas seaborn va nous montrer 
+# dans ce cas seaborn va nous montrer
 # les intervalles de confiance autour de la moyenne
 
 sns.relplot(data=fmri, x="timepoint", y="signal", kind="line");
@@ -233,7 +240,7 @@ pour en savoir plus: <https://seaborn.pydata.org/tutorial/categorical.html>
 cet outil est très pratique pour fabriquer en un seul appel des vues croisées entre plusieurs colonnes; par exemple
 
 ```{code-cell} ipython3
-# toujours la corrélation entre 
+# toujours la corrélation entre
 # les pourboires et le montant de l'addition
 
 sns.jointplot(
