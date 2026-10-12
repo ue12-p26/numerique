@@ -13,9 +13,10 @@ language_info:
   name: python
   pygments_lexer: ipython3
   nbconvert_exporter: python
+short_title: données temporelles
 ---
 
-# timeseries en pandas
+# données temporelles (timeseries) en `pandas`
 
 ```{code-cell} ipython3
 import pandas as pd
