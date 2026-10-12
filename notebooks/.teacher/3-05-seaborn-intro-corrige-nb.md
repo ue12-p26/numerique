@@ -525,23 +525,27 @@ sns.displot(
 
 ### distributions with catplot
 
-```{code-cell} ipython3
-sns.catplot(
-    data=penguins,
-    x='species',
-    y='body_mass_g',
-    kind='swarm');
-```
+the same distributions, observed here using `catplot()`
 
+````{grid} 2
 ```{code-cell} ipython3
 sns.catplot(
     data=penguins,
     x='species',
     y='body_mass_g',
+    hue='species',
     kind='box');
 ```
 
-the same distributions, observed here using `catplot()`
+```{code-cell} ipython3
+sns.catplot(
+    data=penguins,
+    x='species',
+    y='body_mass_g',
+    hue='species',
+    kind='swarm');
+```
+````
 
 ### jointplot
 
@@ -565,3 +569,45 @@ sns.pairplot(
     data=penguins,
     hue='species');
 ```
+
+### autres plots
+
+à trouver dans la doc
+
+voici à quoi ressemblent ces quatre plots, sur les mêmes données que ci-dessus
+(`catplot(kind=...)` ou directement la fonction correspondante)
+
+````{grid} 2
+```{figure} media/3-05-other-strip.png
+:alt: stripplot
+:align: center
+
+`stripplot`
+```
+
+```{figure} media/3-05-other-swarm.png
+:alt: swarmplot
+:align: center
+
+`swarmplot`
+```
+
+```{figure} media/3-05-other-boxen.png
+:alt: boxenplot
+:align: center
+
+`boxenplot`
+```
+
+```{figure} media/3-05-other-violin.png
+:alt: violinplot
+:align: center
+
+`violinplot`
+```
+````
+
+- `stripplot` (en haut à gauche) similaire à scatter plot mais avec du jitter pour éviter les overlaps
+- `swarmplot` (en haut à droite): aussi, et cette fois les fois ne peuvent pas overlap (le diagramme prend la place qu'il faut)
+- `boxenplot` (en bas à gauche): similaire à `boxplot` mais avec plus de détails
+- `violinplot` (en bas à droite): aussi, avec une estimation de la distribution
