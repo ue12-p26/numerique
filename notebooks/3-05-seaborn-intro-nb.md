@@ -557,7 +557,7 @@ voici à quoi ressemblent ces quatre plots, sur les mêmes données que ci-dessu
 ```
 ````
 
-- `stripplot` (en haut à gauche) similaire à scatter plot mais avec du jitter pour éviter les overlaps
+- `stripplot` (en haut à gauche) similaire à `scatter` plot mais avec du jitter pour éviter les overlaps
 - `swarmplot` (en haut à droite): aussi, et cette fois les fois ne peuvent pas overlap (le diagramme prend la place qu'il faut)
 - `boxenplot` (en bas à gauche): similaire à `boxplot` mais avec plus de détails
 - `violinplot` (en bas à droite): aussi, avec une estimation de la distribution
