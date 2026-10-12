@@ -334,7 +334,18 @@ sns.pairplot(
     diag_kind='kde',
     hue='Sex',
 );
-plt.savefig("media/3-05-exo-pairplot.png")
+
+# on évite de réécrire l'image à chaque exécution
+# - pas de métadonnée 'Software' qui change avec la version de matplotlib
+# - et on n'écrit le fichier que si le contenu a vraiment changé
+import io
+from pathlib import Path
+
+buffer = io.BytesIO()
+plt.savefig(buffer, format='png', metadata={'Software': None})
+png = Path("media/3-05-exo-pairplot.png")
+if not png.exists() or png.read_bytes() != buffer.getvalue():
+    png.write_bytes(buffer.getvalue())
 ```
 
 ```{code-cell} ipython3
