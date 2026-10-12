@@ -98,7 +98,7 @@ enfin, vous noterez que `df.plot()` fait un appel à `plt.figure()` ! bref c'est
 
 +++ {"tags": ["framed_cell"]}
 
-## tracer une courbe avec `plt.plot`
+## tracer une courbe avec `plt.plot()`
 
 ````{admonition} →
 avec `matplotlib.pyplot.plot`  
@@ -524,7 +524,7 @@ plt.figure(figsize=(10, 2))
 plt.plot(x, np.sin(x))
 ```
 
-***
++++ {"tags": ["level_basic", "framed_cell"]}
 
 ## **exercice** de plot
 
@@ -553,7 +553,7 @@ on utilise ici le driver `matplotlib` pour s'entrainer un peu
 # votre code ici
 ```
 
-***
++++ {"tags": ["framed_cell"]}
 
 ## **exercice** sauver une figure dans un fichier
 
@@ -574,6 +574,7 @@ dans un format au choix (*jpg*, *pdf*, *png*, *svg*...)
 +++
 
 ***
+
 
 ## pour en savoir plus
 

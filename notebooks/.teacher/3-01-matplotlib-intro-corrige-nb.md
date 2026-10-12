@@ -98,7 +98,7 @@ enfin, vous noterez que `df.plot()` fait un appel à `plt.figure()` ! bref c'est
 
 +++ {"tags": ["framed_cell"]}
 
-## tracer une courbe avec `plt.plot`
+## tracer une courbe avec `plt.plot()`
 
 ````{admonition} →
 avec `matplotlib.pyplot.plot`  
@@ -633,3 +633,10 @@ prune-cell
 +++
 
 ***
+
+
+## pour en savoir plus
+
+ceux qui veulent approfondir la question liront avec intérêt [ce livre en ligne
+très complet sur la visualisation en Python, en
+français](https://hal.inria.fr/hal-03427242/document)
