@@ -71,6 +71,8 @@ project:
         - title: TP géoloc addresses (géodata)
           # file: 2-14-imported-addresses-nb.md
           url: https://numerique-exos.info-mines.paris/geo-tps/addresses/readme-addresses-nb/
+        - title: TP (geo) US polls with altair
+          url: https://numerique-exos.info-mines.paris/geo-tps/polls/readme-polls-nb/
         - file: 2-16-TP-on-the-moon-polars-nb.md
         - pattern: .teacher/2*-corrige-nb.md
           hidden: true
