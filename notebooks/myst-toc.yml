@@ -58,9 +58,9 @@ project:
         - title: "TP merge & group"
           url: https://numerique-exos.info-mines.paris/pandas-tps/merge-group/readme-merge-group-nb/
         - title: "TP regular timeseries (Paris bikes)"
-          url: https://numerique-exos.info-mines.paris/pandas-tps/timeseries-events/readme-timeseries-events-nb/
-        - title: "TP irregular timeseries (earthquakes)"
           url: https://numerique-exos.info-mines.paris/pandas-tps/timeseries/readme-timeseries-nb/
+        - title: "TP irregular timeseries (earthquakes)"
+          url: https://numerique-exos.info-mines.paris/pandas-tps/timeseries-events/readme-timeseries-events-nb/
         - title: "HOWTO: les vélos (timeseries)"
           # file: 2-12-imported-fremont-bridge-nb.md
           url: https://numerique-exos.info-mines.paris/pandas-howtos/fremont-bridge/howto-fremont-bridge-nb/
